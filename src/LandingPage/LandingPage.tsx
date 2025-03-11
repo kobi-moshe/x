@@ -1,17 +1,17 @@
 import { Typography } from "@mui/material";
 import { useStyles } from "./styles";
 import { FreeTrialButton } from "../common";
-import ReactGA from "react-ga4";
+// import ReactGA from "react-ga4";
 import { Header } from "../Header";
 import { HeroSection } from "../HeroSection";
 
 export const LandingPage: React.FC = () => {
   const classes = useStyles();
-  ReactGA.send({
-    hitType: "pageview",
-    page: "/",
-    title: "Landing Page",
-  });
+  // ReactGA.send({
+  //   hitType: "pageview",
+  //   page: "/",
+  //   title: "Landing Page",
+  // });
 
   return (
     <div className={classes.wrapper}>

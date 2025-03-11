@@ -5,15 +5,15 @@ import { Header } from "../Header";
 import { PromptsViewer } from "../PromptsViewer";
 import api from "../api";
 import { useStyles } from "./styles";
-import ReactGA from "react-ga4";
+// import ReactGA from "react-ga4";
 
 export const HistoryPage: React.FC = () => {
   const classes = useStyles();
-  ReactGA.send({
-    hitType: "pageview",
-    page: "/history",
-    title: "History Page",
-  });
+  // ReactGA.send({
+  //   hitType: "pageview",
+  //   page: "/history",
+  //   title: "History Page",
+  // });
   const [prompts, setPrompts] = useState<Array<string>>([]);
   const [isLoading, setIsLoading] = useState(true);
 
