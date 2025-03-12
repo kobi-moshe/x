@@ -62,9 +62,6 @@ export const signInWithGoogle = async (): Promise<void> => {
     // Sign in with Firebase and request Gmail permissions
     const result = await signInWithPopup(auth, provider);
 
-    // This gives you a Firebase user object
-    const user = result.user;
-
     // Get the OAuth token and other credentials
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const accessToken = credential?.accessToken; // Use this to fetch Gmail emails

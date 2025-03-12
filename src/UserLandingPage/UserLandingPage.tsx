@@ -41,7 +41,7 @@ export const UserLandingPage: React.FC = () => {
       );
       setEmails(response.data);
     } catch (e) {
-      if (e.status === 401) {
+      if ((e as { status: number }).status === 401) {
         await signInWithGoogle();
       }
     } finally {

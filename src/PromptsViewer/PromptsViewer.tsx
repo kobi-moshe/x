@@ -3,22 +3,16 @@ import { useEffect, useRef, useState } from "react";
 import { CopyButton, Typewriter } from "../common";
 import { Button, Skeleton, Typography } from "@mui/material";
 import { Palette } from "@mui/icons-material";
-import { toast } from "react-toastify"; 
 import { useStyles } from "./styles";
 import { PromptsViewerType } from "./types";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
-import {
-  checkImageStatusUrl,
-  generateImageUrl,
-  shareCreationUrl,
-} from "./utils";
+import { checkImageStatusUrl, generateImageUrl } from "./utils";
 
 export const PromptsViewer: React.FC<PromptsViewerType> = (props) => {
   const { generatedPrompts, setGeneratedPrompts, isAnimated = false } = props;
   const classes = useStyles();
   const [imageUid, setImageUid] = useState(-1);
-  const [imageData, setImageData] = useState("");
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   const imagePromptRef = useRef("");
   const navgiate = useNavigate();
@@ -27,7 +21,6 @@ export const PromptsViewer: React.FC<PromptsViewerType> = (props) => {
     try {
       const response = await api.get(`${checkImageStatusUrl}/${imageUid}`);
       if (response.data) {
-        setImageData(response.data);
         setImageUid(-1);
         setIsGeneratingImage(false);
       }
@@ -54,7 +47,6 @@ export const PromptsViewer: React.FC<PromptsViewerType> = (props) => {
       top: 0,
       behavior: "smooth",
     });
-    setImageData("");
     try {
       setIsGeneratingImage(true);
       imagePromptRef.current = prompt;
@@ -68,7 +60,6 @@ export const PromptsViewer: React.FC<PromptsViewerType> = (props) => {
 
   const backToMenu = () => {
     setGeneratedPrompts([]);
-    setImageData("");
     navgiate("/");
   };
 

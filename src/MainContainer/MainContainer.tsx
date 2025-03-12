@@ -4,7 +4,6 @@ import { LandingPage } from "../LandingPage";
 import { UserLandingPage } from "../UserLandingPage";
 import { AuthContext } from "../authContext";
 import { useStyles } from "./styles";
-import { Footer } from "../Footer";
 
 export const MainContainer: React.FC = () => {
   const classes = useStyles();
