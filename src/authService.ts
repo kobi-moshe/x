@@ -44,18 +44,6 @@ export const signInWithEmailPassword = async (
   }
 };
 
-// export const signInWithGoogle = async (): Promise<void> => {
-//   try {
-//     await signInWithPopup(auth, provider);
-//     await verifyUser();
-//   } catch (error) {
-//     console.error(
-//       "Google Sign-In Error:",
-//       error instanceof Error ? error.message : "Unknown error"
-//     );
-//     throw error;
-//   }
-// };
 // Function to sign in with Google using Firebase
 export const signInWithGoogle = async (): Promise<void> => {
   try {
