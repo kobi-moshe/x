@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-export const apiBaseUrl = "http://localhost:3000";
+export const apiBaseUrl = "https://mailbrief-be.vercel.app";
 
 export const ensureFirebaseInitialized = () => {
   return new Promise((resolve) => {
