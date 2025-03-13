@@ -7,6 +7,7 @@ export type EmailType = {
 };
 
 export type EmailViewerProps = EmailType & {
+  isPremiumUser: boolean;
   onClick: (content: string) => void;
 };
 

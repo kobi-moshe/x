@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchGmailEmailsUrl, generateBriefUrl } from "./utils";
+import { fetchGmailEmailsUrl, generateBriefUrl, userStatusUrl } from "./utils";
 import { useStyles } from "./styles";
 import api from "../api";
 import { CircularProgress, Skeleton, Typography } from "@mui/material";
@@ -25,21 +25,24 @@ export const UserLandingPage: React.FC = () => {
   const [emails, setEmails] = useState<Array<EmailType>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isBriefLoading, setIsBriefLoading] = useState(false);
+  const [isPremiumUser, setIsPremiumUser] = useState(false);
 
   const token = localStorage.getItem("token");
   const gmailToken = localStorage.getItem("gmailToken");
 
-  const fetchGmailEmails = async () => {
+  const fetchInitData = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.post(
+      const userStatusResponse = await api.get(userStatusUrl);
+      setIsPremiumUser(userStatusResponse.data.isPremium);
+      const emailsResponse = await axios.post(
         fetchGmailEmailsUrl,
         {
           accessToken: gmailToken,
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setEmails(response.data);
+      setEmails(emailsResponse.data);
     } catch (e) {
       if ((e as { status: number }).status === 401) {
         await signInWithGoogle();
@@ -50,7 +53,7 @@ export const UserLandingPage: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchGmailEmails();
+    fetchInitData();
   }, []);
 
   const generateBrief = async (content: string) => {
@@ -67,7 +70,6 @@ export const UserLandingPage: React.FC = () => {
         content,
       });
       const { summary, responses, actions } = response.data;
-      console.log(responses);
       setSummary(summary);
       setPossibleResponses(responses);
       setActionItems(actions);
@@ -87,7 +89,12 @@ export const UserLandingPage: React.FC = () => {
   return (
     <div className={classes.wrapper}>
       {emails.map((email) => (
-        <EmailViewer key={email.id} {...email} onClick={generateBrief} />
+        <EmailViewer
+          key={email.id}
+          {...email}
+          isPremiumUser={isPremiumUser}
+          onClick={generateBrief}
+        />
       ))}
       {isBriefLoading ? (
         <>

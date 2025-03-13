@@ -94,6 +94,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   accordionContent: {
     display: "flex",
     justifyContent: "space-between",
+    alignItems: "center",
     padding: theme.spacing(0, 2, 0, 0),
   },
   outputWrapper: {
