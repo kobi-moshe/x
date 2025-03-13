@@ -57,7 +57,7 @@ const App: React.FC = () => {
               element={token ? <Navigate to="/" /> : <AuthPage />}
             />
             <Route
-              path="/history"
+              path="/briefs"
               element={token ? <HistoryPage /> : <Navigate to="/" />}
             />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />

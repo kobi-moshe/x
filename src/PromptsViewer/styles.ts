@@ -2,15 +2,28 @@ import { Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) => ({
-  wrapper: {
-    display: "flex",
-    flexDirection: "column",
-    flexGrow: 1,
+  card: {
+    backgroundColor: "#f9f9f9",
+    borderRadius: theme.spacing(2),
     padding: theme.spacing(2),
-    [theme.breakpoints.up("md")]: {
-      padding: theme.spacing(4, 30),
+    boxShadow: "0 3px 6px rgba(0, 0, 0, 0.1)",
+    margin: theme.spacing(0.75),
+    transition: "transform 0.3s",
+    overflow: "hidden",
+    "&:hover": {
+      transform: "scale(1.01)",
     },
-    gap: theme.spacing(6),
+  },
+  wrapper: {
+    "&.MuiCard-root": {
+      display: "flex",
+      flexDirection: "column",
+      flexGrow: 1,
+      padding: theme.spacing(2),
+      gap: theme.spacing(6),
+      borderRadius: theme.spacing(1),
+      height: 500,
+    },
   },
   imageWrapper: {
     maxHeight: 512,

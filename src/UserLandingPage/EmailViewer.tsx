@@ -25,7 +25,7 @@ export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
 
   const isActionButtonDisabled = !isPremiumUser && cleanContent.length > 4000;
   const actionTooltip = isActionButtonDisabled
-    ? "Max 4000 characters, upgrade to premium for unlimited words"
+    ? "Max 4000 characters, upgrade to premium for unlimited characters"
     : "";
 
   const sanitizedHTML = DOMPurify.sanitize(htmlContent, {
@@ -47,7 +47,9 @@ export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
         <div>
           <Typography variant="h6">{subject}</Typography>
           <Typography>From: {sender}</Typography>
-          <Typography>Characters count: {cleanContent.length}</Typography>
+          <Typography variant="body2">
+            Characters count: {cleanContent.length}
+          </Typography>
         </div>
         <Tooltip title={actionTooltip}>
           <span>

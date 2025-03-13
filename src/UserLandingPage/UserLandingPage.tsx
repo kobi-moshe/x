@@ -3,10 +3,10 @@ import { fetchGmailEmailsUrl, generateBriefUrl, userStatusUrl } from "./utils";
 import { useStyles } from "./styles";
 import api from "../api";
 import { CircularProgress, Skeleton, Typography } from "@mui/material";
-import { Typewriter } from "../common";
-import { EmailType, PossibleResponses } from "./types";
+import { BriefData, Typewriter } from "../common";
+import { EmailType } from "./types";
 import { signInWithGoogle } from "../authService";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { EmailViewer } from "./EmailViewer";
 
 // import ReactGA from "react-ga4";
@@ -18,10 +18,7 @@ export const UserLandingPage: React.FC = () => {
   //   page: "/",
   //   title: "User Landing Page",
   // });
-  const [summary, setSummary] = useState("");
-  const [possibleResponses, setPossibleResponses] =
-    useState<PossibleResponses>();
-  const [actionItems, setActionItems] = useState<Array<string>>([]);
+  const [briefs, setBriefs] = useState<BriefData>();
   const [emails, setEmails] = useState<Array<EmailType>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isBriefLoading, setIsBriefLoading] = useState(false);
@@ -33,19 +30,22 @@ export const UserLandingPage: React.FC = () => {
   const fetchInitData = async () => {
     try {
       setIsLoading(true);
-      const userStatusResponse = await api.get(userStatusUrl);
+      const [userStatusResponse, emailsResponse] = await Promise.all([
+        api.get(userStatusUrl),
+        axios.post(
+          fetchGmailEmailsUrl,
+          {
+            accessToken: gmailToken,
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        ),
+      ]);
       setIsPremiumUser(userStatusResponse.data.isPremium);
-      const emailsResponse = await axios.post(
-        fetchGmailEmailsUrl,
-        {
-          accessToken: gmailToken,
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
       setEmails(emailsResponse.data);
     } catch (e) {
-      if ((e as { status: number }).status === 401) {
+      if ((e as AxiosError).status === 401) {
         await signInWithGoogle();
+        window.location.reload();
       }
     } finally {
       setIsLoading(false);
@@ -66,13 +66,10 @@ export const UserLandingPage: React.FC = () => {
     }, 200);
     try {
       setIsBriefLoading(true);
-      const response = await api.post(generateBriefUrl, {
+      const response = await api.post<BriefData>(generateBriefUrl, {
         content,
       });
-      const { summary, responses, actions } = response.data;
-      setSummary(summary);
-      setPossibleResponses(responses);
-      setActionItems(actions);
+      setBriefs(response.data);
     } finally {
       setIsBriefLoading(false);
     }
@@ -105,33 +102,33 @@ export const UserLandingPage: React.FC = () => {
         </>
       ) : (
         <div className={classes.outputWrapper}>
-          {summary && (
+          {briefs?.summary && (
             <>
               <Typography variant="h6" className={classes.title}>
                 Summary
               </Typography>
-              <Typewriter text={summary} />
+              <Typewriter text={briefs.summary} />
             </>
           )}
-          {possibleResponses && (
+          {briefs?.responses && (
             <>
               <Typography variant="h6" className={classes.title}>
                 Possible Responses
               </Typography>
               <Typography className={classes.title}>Positive:</Typography>
-              <Typewriter text={possibleResponses.positive} />
+              <Typewriter text={briefs.responses.positive} />
               <Typography className={classes.title}>Neutral:</Typography>
-              <Typewriter text={possibleResponses.neutral} />
+              <Typewriter text={briefs.responses.neutral} />
               <Typography className={classes.title}>Negative:</Typography>
-              <Typewriter text={possibleResponses.negative} />
+              <Typewriter text={briefs.responses.negative} />
             </>
           )}
-          {actionItems.length > 0 && (
+          {briefs?.actions && (
             <>
               <Typography variant="h6" className={classes.title}>
                 Action Items
               </Typography>
-              {actionItems.map((action, index) => (
+              {briefs.actions.map((action, index) => (
                 <Typewriter key={index} text={`${index + 1}. ${action}`} />
               ))}
             </>

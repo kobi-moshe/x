@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { historyUrl } from "./utils";
 import { CircularProgress } from "@mui/material";
 import { Header } from "../Header";
-import { PromptsViewer } from "../PromptsViewer";
 import api from "../api";
 import { useStyles } from "./styles";
+import { PromptsViewer } from "../PromptsViewer";
+import { BriefData } from "../common";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 // import ReactGA from "react-ga4";
 
 export const HistoryPage: React.FC = () => {
@@ -14,13 +16,13 @@ export const HistoryPage: React.FC = () => {
   //   page: "/history",
   //   title: "History Page",
   // });
-  const [prompts, setPrompts] = useState<Array<string>>([]);
+  const [briefs, setBriefs] = useState<Array<BriefData>>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchInitData = async () => {
     try {
       const response = await api.get(historyUrl);
-      setPrompts(response.data);
+      setBriefs(response.data);
       setIsLoading(false);
     } catch {
       setIsLoading(false);
@@ -40,10 +42,15 @@ export const HistoryPage: React.FC = () => {
             <CircularProgress />
           </div>
         ) : (
-          <PromptsViewer
-            generatedPrompts={prompts}
-            setGeneratedPrompts={setPrompts}
-          />
+          <ResponsiveMasonry
+            columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}
+          >
+            <Masonry>
+              {briefs.map((brief, index) => (
+                <PromptsViewer key={index} {...brief} />
+              ))}
+            </Masonry>
+          </ResponsiveMasonry>
         )}
       </div>
     </>

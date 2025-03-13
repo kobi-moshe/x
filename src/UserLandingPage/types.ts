@@ -10,9 +10,3 @@ export type EmailViewerProps = EmailType & {
   isPremiumUser: boolean;
   onClick: (content: string) => void;
 };
-
-export type PossibleResponses = {
-  positive: string;
-  neutral: string;
-  negative: string;
-};
