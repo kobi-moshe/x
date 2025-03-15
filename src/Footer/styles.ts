@@ -6,11 +6,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     flexDirection: "column",
     [theme.breakpoints.up("md")]: {
-      padding: theme.spacing(2, 30),
+      padding: theme.spacing(4, 30),
       gap: theme.spacing(1),
     },
     [theme.breakpoints.down("sm")]: {
-      padding: theme.spacing(2),
+      padding: theme.spacing(4, 2),
       justifyContent: "space-around",
     },
   },
