@@ -2,7 +2,7 @@ import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles(() => ({
   wrapper: {
-    background: "linear-gradient(to left, #8f94fb, #4e54c8)",
+    background: "linear-gradient(to top, #4b4f99, #000000)",
     width: "100%",
     position: "relative",
   },
@@ -17,11 +17,12 @@ export const useStyles = makeStyles(() => ({
     height: "100%",
     overflow: "hidden",
     margin: 0,
+    padding: 0,
     "& li": {
       position: "absolute",
       display: "block",
       listStyle: "none",
-      background: "rgba(255, 255, 255, 0.2)",
+      background: "rgba(255, 255, 255, 0.1)",
       bottom: "-150px",
     },
   },

@@ -3,4 +3,5 @@ export * from "./OptionsPicker";
 export * from "./Typewriter";
 export * from "../AuthPage";
 export * from "./CopyButton";
+export * from "./PulseAnimation";
 export * from "./types";

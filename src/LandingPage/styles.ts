@@ -10,37 +10,67 @@ export const useStyles = makeStyles((theme: Theme) => ({
       gap: theme.spacing(6),
     },
   },
-  firstSection: {
+  heroInnerWrapper: {
     display: "flex",
+    alignItems: "center",
     justifyContent: "center",
-    [theme.breakpoints.down("sm")]: {
-      flexDirection: "column",
-      alignItems: "center",
+  },
+  "@keyframes fadeInUp": {
+    "0%": {
+      opacity: 0,
+      transform: "translateY(20px)",
     },
-    padding: theme.spacing(5, 2),
-    [theme.breakpoints.up("md")]: {
-      padding: theme.spacing(10, 30),
+    "100%": {
+      opacity: 1,
+      transform: "translateY(0)",
+    },
+  },
+  heroContentWrapper: {
+    animation: "$fadeInUp 1.5s forwards",
+    width: "50%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    textAlign: "center",
+    padding: theme.spacing(10, 0),
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+      flexDirection: "column",
+      padding: theme.spacing(5),
     },
     gap: theme.spacing(5),
   },
-  firstSectionLeft: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    [theme.breakpoints.up("md")]: {
-      width: "50%",
-    },
+  heroTitle: {
+    backgroundImage:
+      "radial-gradient(circle, rgba(82, 189, 149, 0.7) 0%, rgba(255, 255, 255, 0.7) 70%)",
+    backgroundClip: "text",
+    textFillColor: "transparent",
+    fontWeight: "bold",
+    fontSize: theme.spacing(10),
     [theme.breakpoints.down("sm")]: {
-      gap: 20,
+      fontSize: theme.spacing(5),
     },
   },
-  firstSectionRight: {
-    display: "grid",
-    gridTemplateColumns: "repeat(2, 1fr)",
-    alignItems: "center",
-    gap: theme.spacing(1),
-    [theme.breakpoints.up("md")]: {
-      width: "40%",
+  heroSubtitle: {
+    "&.MuiTypography-root": {
+      width: "75%",
+      fontSize: theme.spacing(3),
+      [theme.breakpoints.down("sm")]: {
+        width: "100%",
+        fontSize: theme.spacing(2.5),
+      },
+    },
+  },
+  "@keyframes pulse": {
+    "0%": { transform: "scale(1)" },
+    "50%": { transform: "scale(1.05)" },
+    "100%": { transform: "scale(1)" },
+  },
+  tryButton: {
+    "&.MuiButton-root": {
+      // animation: "$pulse 1.5s infinite",
+      padding: theme.spacing(2, 3.5),
+      fontSize: theme.spacing(2.5),
     },
   },
   secondSection: {
@@ -120,10 +150,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
     alignItems: "center",
     justifyContent: "space-between",
     padding: theme.spacing(2),
+    gap: theme.spacing(3),
     [theme.breakpoints.up("md")]: {
       padding: theme.spacing(0, 30),
     },
     [theme.breakpoints.down("sm")]: {
+      textAlign: "center",
       flexDirection: "column",
     },
   },

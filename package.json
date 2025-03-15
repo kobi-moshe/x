@@ -24,6 +24,7 @@
     "react-ga4": "^2.1.0",
     "react-responsive-masonry": "^2.4.1",
     "react-router-dom": "^6.26.0",
+    "react-spring": "^9.7.4",
     "react-toastify": "^10.0.5",
     "typewriter-effect": "^2.21.0"
   },

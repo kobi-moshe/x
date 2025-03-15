@@ -37,11 +37,7 @@ export const Header: React.FC = () => {
             component={Link}
             variant="contained"
             to="/login"
-            style={{
-              textTransform: "none",
-              color: "black",
-              backgroundColor: "white",
-            }}
+            className={classes.signInButton}
           >
             Sign in
           </Button>

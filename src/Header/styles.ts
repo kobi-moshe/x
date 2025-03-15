@@ -40,4 +40,17 @@ export const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     gap: 8,
   },
+  signInButton: {
+    "&.MuiButton-root": {
+      width: "fit-content",
+      padding: theme.spacing(1, 2),
+      textTransform: "none",
+      borderRadius: theme.spacing(0.75),
+      color: "black",
+      backgroundColor: "white",
+      "&:hover": {
+        backgroundColor: "white",
+      },
+    },
+  },
 }));
