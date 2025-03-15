@@ -4,7 +4,7 @@ import { CircularProgress } from "@mui/material";
 import { Header } from "../Header";
 import api from "../api";
 import { useStyles } from "./styles";
-import { PromptsViewer } from "../PromptsViewer";
+import { BriefViewer } from "../BriefViewer";
 import { BriefData } from "../common";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 // import ReactGA from "react-ga4";
@@ -24,7 +24,7 @@ export const HistoryPage: React.FC = () => {
       const response = await api.get(historyUrl);
       setBriefs(response.data);
       setIsLoading(false);
-    } catch {
+    } finally {
       setIsLoading(false);
     }
   };
@@ -47,7 +47,7 @@ export const HistoryPage: React.FC = () => {
           >
             <Masonry>
               {briefs.map((brief, index) => (
-                <PromptsViewer key={index} {...brief} />
+                <BriefViewer key={index} {...brief} />
               ))}
             </Masonry>
           </ResponsiveMasonry>

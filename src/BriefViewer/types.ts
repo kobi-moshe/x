@@ -1,3 +1,5 @@
+import { BriefData } from "../common";
+
 export type PromptsViewerType = {
   generatedPrompts: Array<string>;
   setGeneratedPrompts: (prompts: Array<string>) => void;
@@ -5,3 +7,7 @@ export type PromptsViewerType = {
   selectedStyle?: string;
   isAnimated?: boolean;
 };
+
+export type ActionItemsDialogProps = {
+  setIsOpen: (isOpen: boolean) => void;
+} & Pick<BriefData, "actions" | "subject">;

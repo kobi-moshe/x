@@ -6,7 +6,12 @@ export type EmailType = {
   cleanContent: string;
 };
 
+export type GenerateBriefServerData = {
+  subject: string;
+  content: string;
+};
+
 export type EmailViewerProps = EmailType & {
   isPremiumUser: boolean;
-  onClick: (content: string) => void;
+  onClick: (data: GenerateBriefServerData) => void;
 };

@@ -92,15 +92,47 @@ export const useStyles = makeStyles((theme: Theme) => ({
       fontSize: "1.5rem",
     },
   },
-  copyButton: {
-    "&.MuiIconButton-root": {
-      width: 50,
-      position: "relative",
+  briefCardContent: {
+    display: "flex",
+    flexDirection: "column",
+    gap: theme.spacing(1),
+  },
+  actionItemsWrapper: {
+    display: "flex",
+    alignItems: "center",
+    gap: 4,
+  },
+  dialogWrapper: {
+    padding: theme.spacing(2),
+  },
+  dialogActionsWrapper: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: theme.spacing(2),
+  },
+  closeIcon: {
+    position: "absolute",
+    top: theme.spacing(1),
+    right: theme.spacing(1),
+    cursor: "pointer",
+  },
+  submitButton: {
+    "&.MuiButton-root": {
+      "&:hover": {
+        backgroundColor: "#52BD95",
+      },
+      textTransform: "none",
+      backgroundColor: "#52BD95",
     },
   },
-  copyIcon: {
-    position: "absolute",
-    top: 0,
-    color: "white",
+  loadingWrapper: {
+    margin: "0 auto",
+  },
+  taskCreatedToast: {
+    whiteSpace: "nowrap",
+    display: "inline-block",
+    overflow: "hidden",
+    padding: theme.spacing(2),
   },
 }));

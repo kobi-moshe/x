@@ -4,7 +4,7 @@ import { useStyles } from "./styles";
 import api from "../api";
 import { CircularProgress, Skeleton, Typography } from "@mui/material";
 import { BriefData, Typewriter } from "../common";
-import { EmailType } from "./types";
+import { GenerateBriefServerData, EmailType } from "./types";
 import { signInWithGoogle } from "../authService";
 import axios, { AxiosError } from "axios";
 import { EmailViewer } from "./EmailViewer";
@@ -18,7 +18,7 @@ export const UserLandingPage: React.FC = () => {
   //   page: "/",
   //   title: "User Landing Page",
   // });
-  const [briefs, setBriefs] = useState<BriefData>();
+  const [brief, setBrief] = useState<BriefData>();
   const [emails, setEmails] = useState<Array<EmailType>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isBriefLoading, setIsBriefLoading] = useState(false);
@@ -56,7 +56,7 @@ export const UserLandingPage: React.FC = () => {
     fetchInitData();
   }, []);
 
-  const generateBrief = async (content: string) => {
+  const generateBrief = async (data: GenerateBriefServerData) => {
     setTimeout(() => {
       window.scrollTo({
         top:
@@ -66,10 +66,8 @@ export const UserLandingPage: React.FC = () => {
     }, 200);
     try {
       setIsBriefLoading(true);
-      const response = await api.post<BriefData>(generateBriefUrl, {
-        content,
-      });
-      setBriefs(response.data);
+      const response = await api.post<BriefData>(generateBriefUrl, data);
+      setBrief(response.data);
     } finally {
       setIsBriefLoading(false);
     }
@@ -102,33 +100,33 @@ export const UserLandingPage: React.FC = () => {
         </>
       ) : (
         <div className={classes.outputWrapper}>
-          {briefs?.summary && (
+          {brief?.summary && (
             <>
               <Typography variant="h6" className={classes.title}>
                 Summary
               </Typography>
-              <Typewriter text={briefs.summary} />
+              <Typewriter text={brief.summary} />
             </>
           )}
-          {briefs?.responses && (
+          {brief?.responses && (
             <>
               <Typography variant="h6" className={classes.title}>
                 Possible Responses
               </Typography>
               <Typography className={classes.title}>Positive:</Typography>
-              <Typewriter text={briefs.responses.positive} />
+              <Typewriter text={brief.responses.positive} />
               <Typography className={classes.title}>Neutral:</Typography>
-              <Typewriter text={briefs.responses.neutral} />
+              <Typewriter text={brief.responses.neutral} />
               <Typography className={classes.title}>Negative:</Typography>
-              <Typewriter text={briefs.responses.negative} />
+              <Typewriter text={brief.responses.negative} />
             </>
           )}
-          {briefs?.actions && (
+          {brief?.actions && (
             <>
               <Typography variant="h6" className={classes.title}>
                 Action Items
               </Typography>
-              {briefs.actions.map((action, index) => (
+              {brief.actions.map((action, index) => (
                 <Typewriter key={index} text={`${index + 1}. ${action}`} />
               ))}
             </>

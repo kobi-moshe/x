@@ -5,6 +5,7 @@ type PossibleResponses = {
 };
 
 export type BriefData = {
+  subject: string;
   summary: string;
   responses: PossibleResponses;
   actions: Array<string>;

@@ -35,7 +35,7 @@ export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    onClick(cleanContent);
+    onClick({ subject, content: cleanContent });
   };
 
   return (
