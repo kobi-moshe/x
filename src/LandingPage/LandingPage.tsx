@@ -3,6 +3,7 @@ import { useStyles } from "./styles";
 import { FreeTrialButton, PulseAnimation, Typewriter } from "../common";
 import { Header } from "../Header";
 import { HeroSection } from "../HeroSection";
+import { Footer } from "../Footer";
 
 export const LandingPage: React.FC = () => {
   const classes = useStyles();
@@ -43,6 +44,7 @@ export const LandingPage: React.FC = () => {
         </div>
         <FreeTrialButton />
       </div>
+      <Footer />
     </div>
   );
 };

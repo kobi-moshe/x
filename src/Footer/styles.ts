@@ -4,14 +4,20 @@ import { makeStyles } from "@mui/styles";
 export const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {
     display: "flex",
-    justifyContent: "center",
+    flexDirection: "column",
     [theme.breakpoints.up("md")]: {
-      margin: theme.spacing(5, 0, 2, 0),
-      gap: theme.spacing(5),
+      padding: theme.spacing(2, 30),
+      gap: theme.spacing(1),
     },
     [theme.breakpoints.down("sm")]: {
-      margin: theme.spacing(2, 0),
+      padding: theme.spacing(2),
       justifyContent: "space-around",
+    },
+  },
+  divider: {
+    "&.MuiDivider-root": {
+      backgroundColor: "rgba(255, 255, 255, 0.15)",
+      marginBottom: theme.spacing(2),
     },
   },
 }));
