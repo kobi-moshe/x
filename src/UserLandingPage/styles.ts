@@ -104,4 +104,31 @@ export const useStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing(3, 0),
     fontWeight: 500,
   },
+  searchInputWrapper: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: theme.spacing(2)
+  },
+  searchInput: {
+    width: 500,
+    "& .MuiInputBase-input": {
+      color: "white",
+    },
+    "& .MuiOutlinedInput-root": {
+      borderRadius: theme.spacing(10),
+      "& fieldset": {
+        borderColor: "white",
+      },
+      "&:hover fieldset": {
+        borderColor: "white",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#52BD95",
+      },
+    },
+    "& .MuiInputLabel-root": {
+      color: "white",
+    },
+  },
 }));

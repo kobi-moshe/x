@@ -1,13 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { fetchGmailEmailsUrl, generateBriefUrl, userStatusUrl } from "./utils";
 import { useStyles } from "./styles";
 import api from "../api";
-import { CircularProgress, Skeleton, Typography } from "@mui/material";
-import { BriefData, Typewriter } from "../common";
+import {
+  CircularProgress,
+  InputAdornment,
+  Skeleton,
+  TextField,
+} from "@mui/material";
+import { BriefData } from "../common";
 import { GenerateBriefServerData, EmailType } from "./types";
 import { signInWithGoogle } from "../authService";
 import axios, { AxiosError } from "axios";
 import { EmailViewer } from "./EmailViewer";
+import { Search } from "@mui/icons-material";
+import { BriefOutput } from "./BriefOutput";
 
 // import ReactGA from "react-ga4";
 
@@ -19,10 +26,14 @@ export const UserLandingPage: React.FC = () => {
   //   title: "User Landing Page",
   // });
   const [brief, setBrief] = useState<BriefData>();
-  const [emails, setEmails] = useState<Array<EmailType>>([]);
+  const [filteredEmails, setFilteredEmails] = useState<Array<EmailType>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isBriefLoading, setIsBriefLoading] = useState(false);
   const [isPremiumUser, setIsPremiumUser] = useState(false);
+
+  const emailsRef = useRef<Array<EmailType>>([]);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const token = localStorage.getItem("token");
   const gmailToken = localStorage.getItem("gmailToken");
@@ -41,7 +52,8 @@ export const UserLandingPage: React.FC = () => {
         ),
       ]);
       setIsPremiumUser(userStatusResponse.data.isPremium);
-      setEmails(emailsResponse.data);
+      emailsRef.current = emailsResponse.data;
+      setFilteredEmails(emailsResponse.data);
     } catch (e) {
       if ((e as AxiosError).status === 401) {
         await signInWithGoogle();
@@ -73,6 +85,21 @@ export const UserLandingPage: React.FC = () => {
     }
   };
 
+  const onSearchChange = () => {
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+    if (searchRef.current) {
+      const { value } = searchRef.current;
+      debounceTimeout.current = setTimeout(() => {
+        const relevantEmails = emailsRef.current.filter((email) =>
+          email.subject.toLowerCase().includes(value.toLowerCase())
+        );
+        setFilteredEmails(relevantEmails);
+      }, 300);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className={classes.loadingWrapper}>
@@ -83,7 +110,22 @@ export const UserLandingPage: React.FC = () => {
 
   return (
     <div className={classes.wrapper}>
-      {emails.map((email) => (
+      <div className={classes.searchInputWrapper}>
+        <TextField
+          inputRef={searchRef}
+          placeholder="Subject..."
+          onChange={onSearchChange}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search style={{ color: "#52BD95" }} />
+              </InputAdornment>
+            ),
+          }}
+          className={classes.searchInput}
+        />
+      </div>
+      {filteredEmails.map((email) => (
         <EmailViewer
           key={email.id}
           {...email}
@@ -99,39 +141,7 @@ export const UserLandingPage: React.FC = () => {
           <Skeleton height={200} width="85%" className={classes.skeleton} />
         </>
       ) : (
-        <div className={classes.outputWrapper}>
-          {brief?.summary && (
-            <>
-              <Typography variant="h6" className={classes.title}>
-                Summary
-              </Typography>
-              <Typewriter text={brief.summary} />
-            </>
-          )}
-          {brief?.responses && (
-            <>
-              <Typography variant="h6" className={classes.title}>
-                Possible Responses
-              </Typography>
-              <Typography className={classes.title}>Positive:</Typography>
-              <Typewriter text={brief.responses.positive} />
-              <Typography className={classes.title}>Neutral:</Typography>
-              <Typewriter text={brief.responses.neutral} />
-              <Typography className={classes.title}>Negative:</Typography>
-              <Typewriter text={brief.responses.negative} />
-            </>
-          )}
-          {brief?.actions && (
-            <>
-              <Typography variant="h6" className={classes.title}>
-                Action Items
-              </Typography>
-              {brief.actions.map((action, index) => (
-                <Typewriter key={index} text={`${index + 1}. ${action}`} />
-              ))}
-            </>
-          )}
-        </div>
+        brief && <BriefOutput {...brief} />
       )}
     </div>
   );
