@@ -1,18 +1,13 @@
 import {
   Card,
   CardContent,
-  Chip,
-  Dialog,
-  DialogContent,
-  DialogTitle,
   IconButton,
-  Stack,
   Tooltip,
   Typography,
 } from "@mui/material";
 import { useStyles } from "./styles";
 import { BriefData } from "../common";
-import { AddTask, Close } from "@mui/icons-material";
+import { AddTask } from "@mui/icons-material";
 import { useState } from "react";
 import { ActionItemsDialog } from "./ActionItemsDialog";
 
