@@ -1,15 +1,13 @@
 import {
   auth,
-  provider,
-  signInWithPopup,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signInWithCustomToken,
 } from "./firebase";
-import api from "./api";
-import { GoogleAuthProvider } from "firebase/auth";
+import api, { apiBaseUrl } from "./api";
 
 export const verifyUser = async (): Promise<void> => {
-  await api.get("auth/verify");
+  await api.post("auth/verify");
 };
 
 export const signUp = async (
@@ -47,15 +45,16 @@ export const signInWithEmailPassword = async (
 // Function to sign in with Google using Firebase
 export const signInWithGoogle = async (): Promise<void> => {
   try {
-    // Sign in with Firebase and request Gmail permissions
-    const result = await signInWithPopup(auth, provider);
+    const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=908421014283-07c2rqi65hmg22s6vmss7tvc82q0bsl1.apps.googleusercontent.com&redirect_uri=${encodeURIComponent(
+      "http://localhost:3000/auth/google/callback"
+    )}&response_type=code&scope=openid email profile https://www.googleapis.com/auth/gmail.readonly&access_type=offline&prompt=consent`;
 
-    // Get the OAuth token and other credentials
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const accessToken = credential?.accessToken; // Use this to fetch Gmail emails
-    if (accessToken) {
-      localStorage.setItem("gmailToken", accessToken);
-    }
+    window.open(oauthUrl, "_blank", "width=500,height=600");
+    window.addEventListener("message", async (event) => {
+      if (event.origin !== apiBaseUrl) return;
+      const { firebaseToken } = event.data;
+      await signInWithCustomToken(auth, firebaseToken);
+    });
   } catch (error) {
     console.error("Google Sign-In Error:", error);
     throw error;

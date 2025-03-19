@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-export const apiBaseUrl = "https://mailbrief-be.vercel.app";
+export const apiBaseUrl = "http://localhost:3000";
 
 export const ensureFirebaseInitialized = () => {
   return new Promise((resolve) => {
@@ -57,7 +57,7 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     if (!originalRequest._retryCount) {
-      originalRequest._retryCount = 0;
+      originalRequest._retryCount = 4;
     }
     if (
       error.response &&

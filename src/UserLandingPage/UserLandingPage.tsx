@@ -35,30 +35,21 @@ export const UserLandingPage: React.FC = () => {
   const searchRef = useRef<HTMLInputElement>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  const token = localStorage.getItem("token");
-  const gmailToken = localStorage.getItem("gmailToken");
-
   const fetchInitData = async () => {
     try {
       setIsLoading(true);
       const [userStatusResponse, emailsResponse] = await Promise.all([
         api.get(userStatusUrl),
-        axios.post(
-          fetchGmailEmailsUrl,
-          {
-            accessToken: gmailToken,
-          },
-          { headers: { Authorization: `Bearer ${token}` } }
-        ),
+        api.post(fetchGmailEmailsUrl),
       ]);
       setIsPremiumUser(userStatusResponse.data.isPremium);
       emailsRef.current = emailsResponse.data;
       setFilteredEmails(emailsResponse.data);
     } catch (e) {
-      if ((e as AxiosError).status === 401) {
-        await signInWithGoogle();
-        window.location.reload();
-      }
+      // if ((e as AxiosError).status === 401) {
+      //   await signInWithGoogle();
+      //   window.location.reload();
+      // }
     } finally {
       setIsLoading(false);
     }

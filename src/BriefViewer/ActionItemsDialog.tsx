@@ -28,8 +28,6 @@ export const ActionItemsDialog: React.FC<ActionItemsDialogProps> = (props) => {
   const [actionChips, setActionChips] = useState<Array<string>>(actions);
   const [isLoading, setIsLoading] = useState(false);
 
-  const gmailToken = localStorage.getItem("gmailToken");
-
   const onDeleteChip = (action: string) => {
     setActionChips((prevState) => prevState.filter((chip) => chip !== action));
   };
@@ -42,7 +40,6 @@ export const ActionItemsDialog: React.FC<ActionItemsDialogProps> = (props) => {
     try {
       setIsLoading(true);
       await api.post(tasksUrl, {
-        accessToken: gmailToken,
         listTitle: subject,
         actionItems: actionChips,
       });

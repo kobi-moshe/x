@@ -1,9 +1,8 @@
 import { useContext } from "react";
-import { Header } from "../Header";
 import { LandingPage } from "../LandingPage";
-import { UserLandingPage } from "../UserLandingPage";
 import { AuthContext } from "../authContext";
 import { useStyles } from "./styles";
+import { UserHomePage } from "../UserHomePage";
 
 export const MainContainer: React.FC = () => {
   const classes = useStyles();
@@ -13,8 +12,8 @@ export const MainContainer: React.FC = () => {
     <div className={classes.wrapper}>
       {token ? (
         <>
-          <Header />
-          <UserLandingPage />
+          {/* <Header /> */}
+          <UserHomePage />
         </>
       ) : (
         <LandingPage />
