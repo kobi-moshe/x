@@ -4,6 +4,7 @@ export type EmailType = {
   sender: string;
   htmlContent: string;
   cleanContent: string;
+  snippet: string;
 };
 
 export type GenerateBriefServerData = {

@@ -35,7 +35,7 @@ import api from "../api";
 import { fetchGmailEmailsUrl, userStatusUrl } from "../UserLandingPage/utils";
 import { EmailType } from "../UserLandingPage/types";
 import DOMPurify from "dompurify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../authService";
 import { useStyles } from "./styles";
 
@@ -57,16 +57,19 @@ const darkTheme = createTheme({
 
 export const UserHomePage: React.FC = () => {
   const classes = useStyles();
-  const [selectedEmail, setSelectedEmail] = useState(null);
+  const [selectedEmail, setSelectedEmail] = useState<{ htmlContent: string }>({
+    htmlContent: "",
+  });
   const [searchTerm, setSearchTerm] = useState("");
   const [isEmailViewOpen, setIsEmailViewOpen] = useState(false);
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
-  const [selectedEmails, setSelectedEmails] = useState<number[]>([]);
+  const [selectedEmails, setSelectedEmails] = useState<Array<string>>([]);
   const [filteredEmails, setFilteredEmails] = useState<Array<EmailType>>([]);
   const [isPremiumUser, setIsPremiumUser] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const sanitizedHTML = DOMPurify.sanitize(selectedEmail?.htmlContent, {
+  const sanitizedHTML = DOMPurify.sanitize(selectedEmail.htmlContent, {
     ADD_TAGS: ["style"],
     ADD_ATTR: ["target"],
   });
@@ -96,8 +99,9 @@ export const UserHomePage: React.FC = () => {
   useEffect(() => {
     fetchInitData();
   }, []);
+  console.log(filteredEmails);
 
-  const handleEmailClick = (email) => {
+  const handleEmailClick = (email: EmailType) => {
     setSelectedEmail(email);
     setIsEmailViewOpen(true);
   };
@@ -110,7 +114,7 @@ export const UserHomePage: React.FC = () => {
     setIsMenuCollapsed(!isMenuCollapsed);
   };
 
-  const handleCheckboxChange = (emailId: number) => {
+  const handleCheckboxChange = (emailId: string) => {
     setSelectedEmails((prev) =>
       prev.includes(emailId)
         ? prev.filter((id) => id !== emailId)
@@ -120,7 +124,8 @@ export const UserHomePage: React.FC = () => {
 
   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      setSelectedEmails(filteredEmails.map((email) => email.id));
+      const selected = filteredEmails.map((email) => email.id);
+      setSelectedEmails(selected);
     } else {
       setSelectedEmails([]);
     }
