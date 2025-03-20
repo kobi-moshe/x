@@ -65,7 +65,7 @@ export const UserHomePage: React.FC = () => {
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const [selectedEmails, setSelectedEmails] = useState<Array<string>>([]);
   const [filteredEmails, setFilteredEmails] = useState<Array<EmailType>>([]);
-  const [isPremiumUser, setIsPremiumUser] = useState(false);
+//   const [isPremiumUser, setIsPremiumUser] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -83,7 +83,7 @@ export const UserHomePage: React.FC = () => {
         api.get(userStatusUrl),
         api.post(fetchGmailEmailsUrl),
       ]);
-      setIsPremiumUser(userStatusResponse.data.isPremium);
+    //   setIsPremiumUser(userStatusResponse.data.isPremium);
       emailsRef.current = emailsResponse.data;
       setFilteredEmails(emailsResponse.data);
     } catch (e) {

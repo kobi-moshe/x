@@ -10,8 +10,6 @@ import {
 } from "@mui/material";
 import { BriefData } from "../common";
 import { GenerateBriefServerData, EmailType } from "./types";
-import { signInWithGoogle } from "../authService";
-import axios, { AxiosError } from "axios";
 import { EmailViewer } from "./EmailViewer";
 import { Search } from "@mui/icons-material";
 import { BriefOutput } from "./BriefOutput";
