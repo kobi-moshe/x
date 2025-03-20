@@ -99,7 +99,6 @@ export const UserHomePage: React.FC = () => {
   useEffect(() => {
     fetchInitData();
   }, []);
-  console.log(filteredEmails);
 
   const handleEmailClick = (email: EmailType) => {
     setSelectedEmail(email);
