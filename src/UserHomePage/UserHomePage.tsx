@@ -57,9 +57,7 @@ const darkTheme = createTheme({
 
 export const UserHomePage: React.FC = () => {
   const classes = useStyles();
-  const [selectedEmail, setSelectedEmail] = useState<{ htmlContent: string }>({
-    htmlContent: "",
-  });
+  const [selectedEmail, setSelectedEmail] = useState<EmailType>();
   const [searchTerm, setSearchTerm] = useState("");
   const [isEmailViewOpen, setIsEmailViewOpen] = useState(false);
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
@@ -69,10 +67,7 @@ export const UserHomePage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const sanitizedHTML = DOMPurify.sanitize(selectedEmail.htmlContent, {
-    ADD_TAGS: ["style"],
-    ADD_ATTR: ["target"],
-  });
+  const sanitizedHTML = useRef("");
 
   const emailsRef = useRef<Array<EmailType>>([]);
 
@@ -86,11 +81,6 @@ export const UserHomePage: React.FC = () => {
       //   setIsPremiumUser(userStatusResponse.data.isPremium);
       emailsRef.current = emailsResponse.data;
       setFilteredEmails(emailsResponse.data);
-    } catch (e) {
-      // if ((e as AxiosError).status === 401) {
-      //   await signInWithGoogle();
-      //   window.location.reload();
-      // }
     } finally {
       setIsLoading(false);
     }
@@ -102,6 +92,10 @@ export const UserHomePage: React.FC = () => {
 
   const handleEmailClick = (email: EmailType) => {
     setSelectedEmail(email);
+    sanitizedHTML.current = DOMPurify.sanitize(email.htmlContent, {
+      ADD_TAGS: ["style"],
+      ADD_ATTR: ["target"],
+    });
     setIsEmailViewOpen(true);
   };
 
@@ -334,7 +328,11 @@ export const UserHomePage: React.FC = () => {
               >
                 {selectedEmail && (
                   <>
-                    <div dangerouslySetInnerHTML={{ __html: sanitizedHTML }} />
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: sanitizedHTML.current,
+                      }}
+                    />
                     <IconButton
                       onClick={handleCloseEmail}
                       style={{
