@@ -49,7 +49,29 @@ export const signInWithGoogle = async (): Promise<void> => {
       `http://localhost/auth/google/callback`
     )}&response_type=code&scope=openid email profile https://www.googleapis.com/auth/gmail.readonly&access_type=offline&prompt=consent`;
 
-    window.open(oauthUrl, "_blank", "width=500,height=600");
+    const popup = window.open(oauthUrl, "_blank", "width=500,height=600");
+
+    const interval = setInterval(() => {
+      try {
+        if (popup) {
+          if (
+            popup.location.href.includes(
+              "http://localhost/auth/google/callback"
+            )
+          ) {
+            console.log("OAuth callback URL detected:", popup.location.href);
+            // Do something with the callback, e.g., close the popup and process the code
+            popup.location.href = "https://mailbrief-be.vercel.app/auth/google/callback"
+            popup.close();
+            clearInterval(interval);
+          }
+        }
+      } catch (error) {
+        // Catch cross-origin errors (the popup will block access to location until it reaches your domain)
+        console.log("Waiting for the popup to reach the callback URL...");
+      }
+    }, 1000);
+
     window.addEventListener("message", async (event) => {
       if (event.origin !== apiBaseUrl) return;
       const { firebaseToken } = event.data;
