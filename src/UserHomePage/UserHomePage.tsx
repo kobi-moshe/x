@@ -59,7 +59,6 @@ export const UserHomePage: React.FC = () => {
   const classes = useStyles();
   const [selectedEmail, setSelectedEmail] = useState<EmailType>();
   const [searchTerm, setSearchTerm] = useState("");
-  const [isEmailViewOpen, setIsEmailViewOpen] = useState(false);
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const [selectedEmails, setSelectedEmails] = useState<Array<string>>([]);
   const [filteredEmails, setFilteredEmails] = useState<Array<EmailType>>([]);
@@ -96,11 +95,10 @@ export const UserHomePage: React.FC = () => {
       ADD_TAGS: ["style"],
       ADD_ATTR: ["target"],
     });
-    setIsEmailViewOpen(true);
   };
 
   const handleCloseEmail = () => {
-    setIsEmailViewOpen(false);
+    setSelectedEmail(undefined);
   };
 
   const toggleMenu = () => {
@@ -123,12 +121,6 @@ export const UserHomePage: React.FC = () => {
       setSelectedEmails([]);
     }
   };
-
-  useEffect(() => {
-    if (selectedEmail) {
-      setIsEmailViewOpen(true);
-    }
-  }, [selectedEmail]);
 
   const menuItems = [
     { text: "Inbox", icon: <InboxIcon /> },
@@ -233,6 +225,8 @@ export const UserHomePage: React.FC = () => {
           <div
             style={{
               flexGrow: 1,
+              flexShrink: 1,
+              minWidth: 0,
               display: "flex",
               flexDirection: "column",
               height: "100vh",
@@ -262,12 +256,10 @@ export const UserHomePage: React.FC = () => {
                 <MoreVertIcon />
               </IconButton>
             </Box>
-            <Box sx={{ flexGrow: 1, display: "flex", overflow: "hidden" }}>
+            <div style={{ flexGrow: 1, display: "flex", overflow: "hidden" }}>
               <Paper
                 style={{
-                  width: 100,
                   flexGrow: 1,
-                  margin: isEmailViewOpen ? 2 : 0,
                   transition: "margin-right 0.3s",
                   overflow: "auto",
                 }}
@@ -284,26 +276,31 @@ export const UserHomePage: React.FC = () => {
                       backgroundColor: "inherit",
                     }}
                   >
-                    <Checkbox
-                      checked={selectedEmails.includes(email.id)}
-                      onChange={() => handleCheckboxChange(email.id)}
-                      onClick={(e) => e.stopPropagation()}
-                    />
                     <div
                       onClick={() => handleEmailClick(email)}
                       style={{
+                        flexGrow: 1,
+                        width: "100%",
                         display: "flex",
                         alignItems: "center",
-                        flexGrow: 1,
                       }}
                     >
+                      <Checkbox
+                        checked={selectedEmails.includes(email.id)}
+                        onChange={() => handleCheckboxChange(email.id)}
+                        onClick={(e) => e.stopPropagation()}
+                      />
                       <Typography
                         variant="body2"
-                        style={{ width: "20%", fontWeight: "bold" }}
+                        style={{
+                          width: 200,
+                          flexShrink: 0,
+                          fontWeight: "bold",
+                        }}
                       >
                         {email.sender.split("<")[0]}
                       </Typography>
-                      <div style={{ width: "60%" }}>
+                      <div style={{ flexGrow: 1, minWidth: 0 }}>
                         <Typography variant="body2">{email.subject}</Typography>
                         <Typography
                           variant="body2"
@@ -317,39 +314,37 @@ export const UserHomePage: React.FC = () => {
                   </div>
                 ))}
               </Paper>
-              <Paper
-                sx={{
-                  width: isEmailViewOpen ? "50%" : "0%",
-                  overflow: "auto",
-                  transition: "width 0.5s",
-                  position: "relative",
-                  backgroundColor: "transparent",
-                }}
-              >
-                {selectedEmail && (
-                  <>
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: sanitizedHTML.current,
-                      }}
-                    />
-                    <IconButton
-                      onClick={handleCloseEmail}
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        right: 8,
-                        backgroundColor: "black",
-                        color: "white",
-                        padding: 4,
-                      }}
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                  </>
-                )}
-              </Paper>
-            </Box>
+              {selectedEmail && (
+                <Paper
+                  style={{
+                    overflow: "auto",
+                    position: "relative",
+                    backgroundColor: "transparent",
+                    flexGrow: 1,
+                    flexShrink: 0,
+                    padding: 32,
+                  }}
+                >
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizedHTML.current,
+                    }}
+                  />
+                  <IconButton
+                    onClick={handleCloseEmail}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      right: 8,
+                      color: "white",
+                      padding: 4,
+                    }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </Paper>
+              )}
+            </div>
           </div>
         )}
       </Box>
