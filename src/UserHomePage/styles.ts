@@ -35,4 +35,13 @@ export const useStyles = makeStyles((theme: Theme) => ({
       borderRadius: 50,
     },
   },
+  emailsWrapper: {
+    flexGrow: 1,
+    overflow: "auto",
+    scrollbarWidth: "none",
+    "-ms-overflow-style": "none",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
+  },
 }));

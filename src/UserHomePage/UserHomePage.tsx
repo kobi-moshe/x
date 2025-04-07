@@ -271,27 +271,24 @@ export const UserHomePage: React.FC = () => {
               </IconButton>
             </Box>
             <div style={{ flexGrow: 1, display: "flex", overflow: "hidden" }}>
-              <Paper
-                style={{
-                  flexGrow: 1,
-                  transition: "margin-right 0.3s",
-                  overflow: "auto",
-                }}
-              >
+              <Paper className={classes.emailsWrapper}>
                 {filteredEmails.map((email) => (
                   <div
                     key={email.id}
+                    onClick={() => handleEmailClick(email)}
                     style={{
                       display: "flex",
                       alignItems: "center",
                       padding: 8,
                       borderBottom: "1px solid rgba(255, 255, 255, 0.12)",
                       cursor: "pointer",
-                      backgroundColor: "inherit",
+                      backgroundColor:
+                        selectedEmail?.id === email.id
+                          ? "rgba(82, 189, 149, 0.2)"
+                          : "inherit",
                     }}
                   >
                     <div
-                      onClick={() => handleEmailClick(email)}
                       style={{
                         flexGrow: 1,
                         width: "100%",
@@ -331,12 +328,16 @@ export const UserHomePage: React.FC = () => {
               {selectedEmail && (
                 <Paper
                   style={{
+                    width: "50%",
+                    display: "flex",
+                    justifyContent: "center",
                     overflow: "auto",
                     position: "relative",
-                    backgroundColor: "transparent",
                     flexGrow: 1,
                     flexShrink: 0,
                     padding: 32,
+                    backgroundImage: "none",
+                    borderLeft: "1px solid dimgrey",
                   }}
                 >
                   <div
