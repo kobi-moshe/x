@@ -55,7 +55,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
         content: '""',
         position: "absolute",
         inset: "3px",
-        background: "rgba(0, 0, 0, 0.85)",
+        background: "rgba(0, 0, 0, 0.9)",
         zIndex: 1,
       },
       "& .button-content": {
