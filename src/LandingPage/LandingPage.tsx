@@ -44,7 +44,7 @@ export const LandingPage: React.FC = () => {
             interface
           </Typography>
           <img width={300} src={arrow} className={classes.rightArrow} />
-          <video autoPlay controls className={classes.video}>
+          <video autoPlay muted loop className={classes.video}>
             <source src={intro1} type="video/mp4" />
           </video>
         </div>
@@ -54,7 +54,7 @@ export const LandingPage: React.FC = () => {
             your emails
           </Typography>
           <img width={300} src={arrow2} className={classes.leftArrow} />
-          <video autoPlay controls className={classes.video}>
+          <video autoPlay muted loop className={classes.video}>
             <source src={intro2} type="video/mp4" />
           </video>
         </div>
@@ -64,7 +64,7 @@ export const LandingPage: React.FC = () => {
             location
           </Typography>
           <img width={300} src={arrow} className={classes.rightArrow} />
-          <video autoPlay controls className={classes.video}>
+          <video autoPlay muted loop className={classes.video}>
             <source src={intro3} type="video/mp4" />
           </video>
         </div>
@@ -74,7 +74,7 @@ export const LandingPage: React.FC = () => {
             Google Tasks integration
           </Typography>
           <img width={300} src={arrow2} className={classes.leftArrow} />
-          <video autoPlay controls className={classes.video}>
+          <video autoPlay muted loop className={classes.video}>
             <source src={intro4} type="video/mp4" />
           </video>
         </div>

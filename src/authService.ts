@@ -5,6 +5,7 @@ import {
   signInWithCustomToken,
 } from "./firebase";
 import api, { apiBaseUrl } from "./api";
+import { toast } from "react-toastify";
 
 export const verifyUser = async (): Promise<void> => {
   await api.post("auth/verify");
@@ -59,8 +60,15 @@ export const signInWithGoogle = async (): Promise<void> => {
     );
     window.addEventListener("message", async (event) => {
       if (event.origin !== apiBaseUrl) return;
-      const { firebaseToken } = event.data;
-      await signInWithCustomToken(auth, firebaseToken);
+      const { firebaseToken, error } = event.data;
+      if (error === "missing_permissions") {
+        toast("Please grant all requested permissions in order to continue", {
+          type: "error",
+          autoClose: 3000,
+        });
+      } else {
+        await signInWithCustomToken(auth, firebaseToken);
+      }
     });
   } catch (error) {
     console.error("Google Sign-In Error:", error);

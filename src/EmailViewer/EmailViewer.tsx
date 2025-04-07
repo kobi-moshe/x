@@ -2,7 +2,7 @@ import DOMPurify from "dompurify";
 import { Close as CloseIcon } from "@mui/icons-material";
 import { Button, IconButton, Paper, Tooltip, Typography } from "@mui/material";
 import { toast } from "react-toastify";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useStyles } from "./styles";
 import { EmailViewerProps, GenerateBriefServerData } from "./types";
 import { EmailAvatar, briefsUrl, Typewriter } from "../common";
@@ -27,6 +27,7 @@ export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
   } = props;
   const classes = useStyles();
   const [isGeneratingBrief, setIsGeneratingBrief] = useState(false);
+  const briefButtonRef = useRef<HTMLButtonElement>(null);
 
   const matches = sender.match(/(.*)(?=<)/);
   let senderName = matches ? matches[0].trim() : sender;
@@ -57,6 +58,7 @@ export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
           type: "success",
         });
         setBriefs(briefsResponse.data);
+        setTimeout(() => briefButtonRef.current?.click(), 500);
       } finally {
         setIsGeneratingBrief(false);
       }
@@ -89,6 +91,7 @@ export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
     if (hasBrief) {
       return (
         <Button
+          ref={briefButtonRef}
           variant="outlined"
           onClick={(e) => onShowBriefClick(e, id)}
           className={classes.showBriefButton}

@@ -65,6 +65,7 @@ const App: React.FC = () => {
           newestOnTop
           hideProgressBar
           autoClose={2000}
+          style={{ width: "fit-content", whiteSpace: "nowrap" }}
         />
       </AuthContext.Provider>
     </ThemeProvider>
