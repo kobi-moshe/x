@@ -43,7 +43,7 @@ const darkTheme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#BB86FC",
+      main: "#52BD95",
     },
     secondary: {
       main: "#03DAC6",
@@ -58,7 +58,6 @@ const darkTheme = createTheme({
 export const UserHomePage: React.FC = () => {
   const classes = useStyles();
   const [selectedEmail, setSelectedEmail] = useState<EmailType>();
-  const [searchTerm, setSearchTerm] = useState("");
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const [selectedEmails, setSelectedEmails] = useState<Array<string>>([]);
   const [filteredEmails, setFilteredEmails] = useState<Array<EmailType>>([]);
@@ -67,8 +66,9 @@ export const UserHomePage: React.FC = () => {
   const navigate = useNavigate();
 
   const sanitizedHTML = useRef("");
-
   const emailsRef = useRef<Array<EmailType>>([]);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const fetchInitData = async () => {
     try {
@@ -122,13 +122,20 @@ export const UserHomePage: React.FC = () => {
     }
   };
 
-  const menuItems = [
-    { text: "Inbox", icon: <InboxIcon /> },
-    { text: "Sent", icon: <SendIcon /> },
-    { text: "Drafts", icon: <DraftsIcon /> },
-    { text: "Starred", icon: <StarIcon /> },
-    { text: "Trash", icon: <DeleteIcon /> },
-  ];
+  const onSearchChange = () => {
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+    if (searchRef.current) {
+      const { value } = searchRef.current;
+      debounceTimeout.current = setTimeout(() => {
+        const relevantEmails = emailsRef.current.filter((email) =>
+          email.subject.toLowerCase().includes(value.toLowerCase())
+        );
+        setFilteredEmails(relevantEmails);
+      }, 300);
+    }
+  };
 
   const handleLogout = async () => {
     await logout();
@@ -138,6 +145,14 @@ export const UserHomePage: React.FC = () => {
     navigate("/");
   };
 
+  const menuItems = [
+    { text: "Inbox", icon: <InboxIcon /> },
+    { text: "Sent", icon: <SendIcon /> },
+    { text: "Drafts", icon: <DraftsIcon /> },
+    { text: "Starred", icon: <StarIcon /> },
+    { text: "Trash", icon: <DeleteIcon /> },
+  ];
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -146,24 +161,23 @@ export const UserHomePage: React.FC = () => {
           position="fixed"
           sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
         >
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="toggle menu"
-              onClick={toggleMenu}
-              edge="start"
-              sx={{ mr: 2 }}
-            >
-              {isMenuCollapsed ? <MenuIcon /> : <ChevronLeftIcon />}
-            </IconButton>
-            <div onClick={navigateToHome} className={classes.image} />
-            <Box sx={{ flexGrow: 1, ml: 2 }}>
+          <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <IconButton
+                color="inherit"
+                aria-label="toggle menu"
+                onClick={toggleMenu}
+                edge="start"
+              >
+                {isMenuCollapsed ? <MenuIcon /> : <ChevronLeftIcon />}
+              </IconButton>
+              <div onClick={navigateToHome} className={classes.image} />
               <TextField
-                fullWidth
+                inputRef={searchRef}
                 variant="outlined"
-                placeholder="Search mail"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                size="small"
+                placeholder="Search emails"
+                onChange={onSearchChange}
                 InputProps={{
                   startAdornment: (
                     <IconButton>
@@ -171,9 +185,9 @@ export const UserHomePage: React.FC = () => {
                     </IconButton>
                   ),
                 }}
-                size="small"
+                className={classes.searchbox}
               />
-            </Box>
+            </div>
             <div className={classes.linksWrapper}>
               <Link to="/briefs" className={classes.link}>
                 Briefs
@@ -229,7 +243,7 @@ export const UserHomePage: React.FC = () => {
               minWidth: 0,
               display: "flex",
               flexDirection: "column",
-              height: "100vh",
+              height: "100%",
             }}
           >
             <Toolbar />

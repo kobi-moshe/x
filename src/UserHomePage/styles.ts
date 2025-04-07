@@ -14,7 +14,8 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   image: {
     height: 50,
-    width: 150,
+    width: 125,
+    margin: theme.spacing(0, 2, 0, 1),
     backgroundSize: "contain",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
@@ -27,5 +28,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: "center",
     height: "100%",
     width: "100%",
+  },
+  searchbox: {
+    width: 500,
+    "& .MuiInputBase-root": {
+      borderRadius: 50,
+    },
   },
 }));
