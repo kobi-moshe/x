@@ -6,7 +6,7 @@ export const PrivacyPolicy: React.FC = () => {
   return (
     <div className={classes.wrapper}>
       <h1>Privacy Policy</h1>
-      <p>Last updated: August 28, 2024</p>
+      <p>Last updated: November 03, 2024</p>
       <p>
         This Privacy Policy describes Our policies and procedures on the
         collection, use and disclosure of Your information when You use the
@@ -48,7 +48,7 @@ export const PrivacyPolicy: React.FC = () => {
           <p>
             <strong>Company</strong> (referred to as either &quot;the
             Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in
-            this Agreement) refers to ArtPrompter.
+            this Agreement) refers to MailBrief.
           </p>
         </li>
         <li>
@@ -100,13 +100,13 @@ export const PrivacyPolicy: React.FC = () => {
         </li>
         <li>
           <p>
-            <strong>Website</strong> refers to ArtPrompter, accessible from{" "}
+            <strong>Website</strong> refers to MailBrief, accessible from{" "}
             <a
-              href="https://www.artprompter.co"
+              href="https://mailbrief.co"
               rel="external nofollow noopener"
               target="_blank"
             >
-              https://www.artprompter.co
+              https://mailbrief.co
             </a>
           </p>
         </li>
@@ -130,6 +130,9 @@ export const PrivacyPolicy: React.FC = () => {
       <ul>
         <li>
           <p>Email address</p>
+        </li>
+        <li>
+          <p>First name and last name</p>
         </li>
         <li>
           <p>Usage Data</p>
@@ -489,7 +492,7 @@ export const PrivacyPolicy: React.FC = () => {
         If you have any questions about this Privacy Policy, You can contact us:
       </p>
       <ul>
-        <li>By email: artprompterco@gmail.com</li>
+        <li>By email: mailbriefco@gmail.com</li>
       </ul>
     </div>
   );

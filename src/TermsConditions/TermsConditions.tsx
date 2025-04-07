@@ -5,8 +5,8 @@ export const TermsConditions: React.FC = () => {
 
   return (
     <div className={classes.wrapper}>
-      <h2>Terms and Conditions</h2>
-      <p>Last updated: August 28, 2024</p>
+      <h1>Terms and Conditions</h1>
+      <p>Last updated: November 03, 2024</p>
       <p>
         Please read these terms and conditions carefully before using Our
         Service.
@@ -40,7 +40,7 @@ export const TermsConditions: React.FC = () => {
           <p>
             <strong>Company</strong> (referred to as either &quot;the
             Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in
-            this Agreement) refers to ArtPrompter.
+            this Agreement) refers to MailBrief.
           </p>
         </li>
         <li>
@@ -72,13 +72,13 @@ export const TermsConditions: React.FC = () => {
         </li>
         <li>
           <p>
-            <strong>Website</strong> refers to ArtPrompter, accessible from{" "}
+            <strong>Website</strong> refers to MailBrief, accessible from{" "}
             <a
-              href="https://www.artprompter.co"
+              href="https://mailbrief.co"
               rel="external nofollow noopener"
               target="_blank"
             >
-              https://www.artprompter.co
+              https://mailbrief.co
             </a>
           </p>
         </li>
@@ -285,7 +285,7 @@ export const TermsConditions: React.FC = () => {
         contact us:
       </p>
       <ul>
-        <li>By email: artprompterco@gmail.com</li>
+        <li>By email: mailbriefco@gmail.com</li>
       </ul>
     </div>
   );
