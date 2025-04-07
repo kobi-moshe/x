@@ -22,3 +22,9 @@ export type EmailData = {
   htmlContent: string;
   cleanContent: string;
 };
+
+export type UserMetadata = {
+  email: string;
+  name: string;
+  isPremium: boolean;
+};

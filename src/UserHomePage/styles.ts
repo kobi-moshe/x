@@ -1,6 +1,7 @@
 import { createTheme, Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import logo from "/logo.png";
+import favicon from "/favicon.png";
 
 export const darkTheme = createTheme({
   palette: {
@@ -19,11 +20,6 @@ export const darkTheme = createTheme({
 });
 
 export const useStyles = makeStyles((theme: Theme) => ({
-  linksWrapper: {
-    display: "flex",
-    marginLeft: theme.spacing(4),
-    gap: 20,
-  },
   link: {
     textDecoration: "none",
     color: "#52BD95",
@@ -40,6 +36,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     backgroundPosition: "center",
     backgroundImage: `url(${logo})`,
     cursor: "pointer",
+    [theme.breakpoints.down("sm")]: {
+      backgroundImage: `url(${favicon})`,
+      height: 30,
+      margin: theme.spacing(0, 1, 0, 0),
+    },
   },
   loadingWrapper: {
     display: "flex",
@@ -50,6 +51,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   searchbox: {
     width: 500,
+    "&.MuiTextField-root": {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+    },
     "& .MuiInputBase-root": {
       borderRadius: 50,
     },

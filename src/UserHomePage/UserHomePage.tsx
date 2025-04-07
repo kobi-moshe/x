@@ -33,23 +33,24 @@ import api from "../api";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../authService";
 import { darkTheme, useStyles } from "./styles";
-import { BriefData, briefsUrl, EmailData } from "../common";
+import { BriefData, briefsUrl, EmailData, UserMetadata } from "../common";
 import { BriefViewer } from "../BriefViewer";
-import { gmailEmailsUrl, userStatusUrl } from "./utils";
+import { gmailEmailsUrl, userMetadataUrl } from "./utils";
 import { EmailViewer } from "../EmailViewer";
 import { EmailRow } from "../EmailRow";
+import { UserAvatar } from "../UserAvatar";
 
 export const UserHomePage: React.FC = () => {
   const classes = useStyles();
-  const [selectedEmail, setSelectedEmail] = useState<EmailData | null>();
   //   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   //   const [selectedEmails, setSelectedEmails] = useState<Array<string>>([]);
   const [filteredEmails, setFilteredEmails] = useState<Array<EmailData>>([]);
+  const [userMetadata, setUserMetadata] = useState<UserMetadata>();
+  const [selectedEmail, setSelectedEmail] = useState<EmailData | null>();
   const [briefs, setBriefs] = useState<Array<BriefData>>([]);
   const [selectedBrief, setSelectedBrief] = useState<BriefData | null>();
   const [isPremiumUser, setIsPremiumUser] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
 
   const emailsRef = useRef<Array<EmailData>>([]);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -63,7 +64,7 @@ export const UserHomePage: React.FC = () => {
       setIsLoading(true);
       const [userStatusResponse, emailsResponse, briefsResponse] =
         await Promise.all([
-          api.get(userStatusUrl),
+          api.get(userMetadataUrl),
           api.post(gmailEmailsUrl),
           api.get(briefsUrl),
         ]);
@@ -71,6 +72,7 @@ export const UserHomePage: React.FC = () => {
       setBriefs(briefsResponse.data);
       emailsRef.current = emailsResponse.data;
       setFilteredEmails(emailsResponse.data);
+      setUserMetadata(userStatusResponse.data);
     } finally {
       setIsLoading(false);
     }
@@ -130,14 +132,6 @@ export const UserHomePage: React.FC = () => {
     setSelectedBrief(null);
   };
 
-  const handleLogout = async () => {
-    await logout();
-  };
-
-  const navigateToHome = () => {
-    navigate("/");
-  };
-
   //   const menuItems = [
   //     { text: "Inbox", icon: <InboxIcon /> },
   //     { text: "Sent", icon: <SendIcon /> },
@@ -151,8 +145,11 @@ export const UserHomePage: React.FC = () => {
       <CssBaseline />
       <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
         <AppBar position="fixed" style={{ backgroundImage: "none" }}>
-          <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
-            <div onClick={navigateToHome} className={classes.image} />
+          <Toolbar style={{ display: "flex", gap: 16, position: "relative" }}>
+            <UserAvatar {...userMetadata} />
+            <Link to="/briefs" className={classes.link}>
+              Briefs
+            </Link>
             <TextField
               inputRef={searchRef}
               variant="outlined"
@@ -168,14 +165,6 @@ export const UserHomePage: React.FC = () => {
               }}
               className={classes.searchbox}
             />
-            <div className={classes.linksWrapper}>
-              <Link to="/briefs" className={classes.link}>
-                Briefs
-              </Link>
-              <Link to="/" onClick={handleLogout} className={classes.link}>
-                Logout
-              </Link>
-            </div>
           </Toolbar>
         </AppBar>
         {/* <div

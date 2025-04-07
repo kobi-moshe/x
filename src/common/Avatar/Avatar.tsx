@@ -1,8 +1,10 @@
 import React, { useMemo, useState } from "react";
 import { Avatar as MuiAvatar } from "@mui/material";
 import { AvatarProps } from "./types";
+import { useStyles } from "./styles";
 
 export const Avatar: React.FC<AvatarProps> = ({ url, senderName }) => {
+  const classes = useStyles();
   const [logoSrc, setLogoSrc] = useState(url);
   const isTransparentLogo = logoSrc !== url;
 
@@ -24,13 +26,7 @@ export const Avatar: React.FC<AvatarProps> = ({ url, senderName }) => {
     <MuiAvatar
       src={logoSrc}
       onLoad={onLoad}
-      style={{
-        width: 30,
-        height: 30,
-        marginRight: 12,
-        borderRadius: 8,
-        backgroundColor: isTransparentLogo ? "#52BD95" : "#E8E8E8",
-      }}
+      className={isTransparentLogo ? classes.initialsLogo : classes.logo}
     >
       {stringAvatar}
     </MuiAvatar>
