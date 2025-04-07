@@ -8,7 +8,7 @@ export type EmailViewerProps = EmailData & {
     emailId: string
   ) => void;
   onGenerateBriefSuccess: () => void;
-  isPremiumUser?: boolean;
+  isPremiumUser: boolean;
 };
 
 export type GenerateBriefServerData = {

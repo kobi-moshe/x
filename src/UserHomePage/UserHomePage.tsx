@@ -36,7 +36,7 @@ import { darkTheme, useStyles } from "./styles";
 import { BriefData, EmailData } from "../common";
 import { briefsUrl } from "../HistoryPage/utils";
 import { BriefViewer } from "../BriefViewer";
-import { gmailEmailsUrl } from "./utils";
+import { gmailEmailsUrl, userStatusUrl } from "./utils";
 import { EmailViewer } from "../EmailViewer";
 import { EmailRow } from "../EmailRow";
 
@@ -48,7 +48,7 @@ export const UserHomePage: React.FC = () => {
   const [filteredEmails, setFilteredEmails] = useState<Array<EmailData>>([]);
   const [briefs, setBriefs] = useState<Array<BriefData>>([]);
   const [selectedBrief, setSelectedBrief] = useState<BriefData | null>();
-  //   const [isPremiumUser, setIsPremiumUser] = useState(false);
+  const [isPremiumUser, setIsPremiumUser] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -62,14 +62,15 @@ export const UserHomePage: React.FC = () => {
   const fetchInitData = async () => {
     try {
       setIsLoading(true);
-      const [emailsResponse, briefsResponse] = await Promise.all([
-        // api.get(userStatusUrl),
-        api.post(gmailEmailsUrl),
-        api.get(briefsUrl),
-      ]);
-      //   setIsPremiumUser(userStatusResponse.data.isPremium);
-      emailsRef.current = emailsResponse.data;
+      const [userStatusResponse, emailsResponse, briefsResponse] =
+        await Promise.all([
+          api.get(userStatusUrl),
+          api.post(gmailEmailsUrl),
+          api.get(briefsUrl),
+        ]);
+      setIsPremiumUser(userStatusResponse.data.isPremium);
       setBriefs(briefsResponse.data);
+      emailsRef.current = emailsResponse.data;
       setFilteredEmails(emailsResponse.data);
     } finally {
       setIsLoading(false);
@@ -270,6 +271,7 @@ export const UserHomePage: React.FC = () => {
                   hasBrief={briefsIds.includes(selectedEmail.id)}
                   onShowBriefClick={onShowBriefClick}
                   onGenerateBriefSuccess={onGenerateBriefSuccess}
+                  isPremiumUser={isPremiumUser}
                 />
               )}
             </div>
