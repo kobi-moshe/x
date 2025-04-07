@@ -51,6 +51,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   searchbox: {
     width: 500,
+    maxWidth: "100%",
     "&.MuiTextField-root": {
       position: "absolute",
       top: "50%",

@@ -27,12 +27,16 @@ export const BriefViewer: React.FC<BriefData> = (props) => {
           {subject}
         </Typography>
         <div>
-          <Typography variant="h6">Summary</Typography>
+          <Typography variant="h6" fontWeight="bold">
+            Summary
+          </Typography>
           <Typography>{summary}</Typography>
         </div>
         {responses && (
           <div>
-            <Typography variant="h6">Possible Responses</Typography>
+            <Typography variant="h6" fontWeight="bold">
+              Possible Responses
+            </Typography>
             <Typography>Positive:</Typography>
             <Typography>{responses.positive}</Typography>
             <Typography>Neutral:</Typography>
@@ -44,7 +48,9 @@ export const BriefViewer: React.FC<BriefData> = (props) => {
         {actions.length > 0 && (
           <div>
             <div className={classes.actionItemsWrapper}>
-              <Typography variant="h6">Action Items</Typography>
+              <Typography variant="h6" fontWeight="bold">
+                Action Items
+              </Typography>
               <Tooltip title="Add tasks">
                 <IconButton
                   size="small"
