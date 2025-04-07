@@ -39,23 +39,25 @@ export const BriefViewer: React.FC<BriefData> = (props) => {
             <Typography>{responses.negative}</Typography>
           </div>
         )}
-        <div>
-          <div className={classes.actionItemsWrapper}>
-            <Typography variant="h6">Action Items</Typography>
-            <Tooltip title="Add tasks">
-              <IconButton
-                size="small"
-                onClick={onAddTaskClick}
-                style={{ color: "#52BD95" }}
-              >
-                <AddTask />
-              </IconButton>
-            </Tooltip>
+        {actions.length > 0 && (
+          <div>
+            <div className={classes.actionItemsWrapper}>
+              <Typography variant="h6">Action Items</Typography>
+              <Tooltip title="Add tasks">
+                <IconButton
+                  size="small"
+                  onClick={onAddTaskClick}
+                  style={{ color: "#52BD95" }}
+                >
+                  <AddTask />
+                </IconButton>
+              </Tooltip>
+            </div>
+            {actions?.map((action, index) => (
+              <Typography key={index}>{`${index + 1}. ${action}`}</Typography>
+            ))}
           </div>
-          {actions?.map((action, index) => (
-            <Typography key={index}>{`${index + 1}. ${action}`}</Typography>
-          ))}
-        </div>
+        )}
       </CardContent>
       {isActionsModalOpen && (
         <ActionItemsDialog

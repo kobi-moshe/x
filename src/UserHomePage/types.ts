@@ -8,11 +8,18 @@ export type EmailType = {
 };
 
 export type GenerateBriefServerData = {
+  id: string;
   subject: string;
   content: string;
 };
 
 export type EmailViewerProps = EmailType & {
-  isPremiumUser: boolean;
-  onClick: (data: GenerateBriefServerData) => void;
+  isPremiumUser?: boolean;
+  hasBrief: boolean;
+  onShowBriefClick: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    emailId: string
+  ) => void;
+  onGenerateBriefSuccess: () => void;
+  onClose: () => void;
 };

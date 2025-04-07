@@ -3,15 +3,17 @@ import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) => ({
   card: {
-    backgroundColor: "#f9f9f9",
-    borderRadius: theme.spacing(2),
-    padding: theme.spacing(2),
-    boxShadow: "0 3px 6px rgba(0, 0, 0, 0.1)",
-    margin: theme.spacing(0.75),
-    transition: "transform 0.3s",
-    overflow: "hidden",
-    "&:hover": {
-      transform: "scale(1.01)",
+    "&.MuiPaper-root": {
+      backgroundImage: "none",
+      borderRadius: theme.spacing(2),
+      padding: theme.spacing(2),
+      boxShadow: "0 3px 6px rgba(0, 0, 0, 0.1)",
+      margin: theme.spacing(0.75),
+      transition: "transform 0.3s",
+      overflow: "hidden",
+      "&:hover": {
+        transform: "scale(1.01)",
+      },
     },
   },
   wrapper: {

@@ -13,10 +13,11 @@ import {
   Paper,
   Checkbox,
   ThemeProvider,
-  createTheme,
   CssBaseline,
   Tooltip,
   CircularProgress,
+  Button,
+  Dialog,
 } from "@mui/material";
 import {
   Inbox as InboxIcon,
@@ -25,42 +26,30 @@ import {
   Star as StarIcon,
   Delete as DeleteIcon,
   Search as SearchIcon,
-  Close as CloseIcon,
   Menu as MenuIcon,
-  ChevronLeft as ChevronLeftIcon,
   Refresh as RefreshIcon,
   MoreVert as MoreVertIcon,
 } from "@mui/icons-material";
 import api from "../api";
-import { fetchGmailEmailsUrl } from "../UserLandingPage/utils";
-import { EmailType } from "../UserLandingPage/types";
 import DOMPurify from "dompurify";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../authService";
-import { useStyles } from "./styles";
-
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-    primary: {
-      main: "#52BD95",
-    },
-    secondary: {
-      main: "#03DAC6",
-    },
-    background: {
-      default: "#121212",
-      paper: "#1E1E1E",
-    },
-  },
-});
+import { darkTheme, useStyles } from "./styles";
+import { EmailViewer } from "./EmailViewer";
+import { BriefData } from "../common";
+import { briefsUrl } from "../HistoryPage/utils";
+import { BriefViewer } from "../BriefViewer";
+import { EmailType } from "./types";
+import { gmailEmailsUrl } from "./utils";
 
 export const UserHomePage: React.FC = () => {
   const classes = useStyles();
-  const [selectedEmail, setSelectedEmail] = useState<EmailType>();
+  const [selectedEmail, setSelectedEmail] = useState<EmailType | null>();
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const [selectedEmails, setSelectedEmails] = useState<Array<string>>([]);
   const [filteredEmails, setFilteredEmails] = useState<Array<EmailType>>([]);
+  const [briefs, setBriefs] = useState<Array<BriefData>>([]);
+  const [selectedBrief, setSelectedBrief] = useState<BriefData | null>();
   //   const [isPremiumUser, setIsPremiumUser] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -70,15 +59,20 @@ export const UserHomePage: React.FC = () => {
   const searchRef = useRef<HTMLInputElement>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
+  const isCheckboxAllSelected = selectedEmails.length === filteredEmails.length;
+  const briefsIds = briefs.map((brief) => brief.id);
+
   const fetchInitData = async () => {
     try {
       setIsLoading(true);
-      const [emailsResponse] = await Promise.all([
+      const [emailsResponse, briefsResponse] = await Promise.all([
         // api.get(userStatusUrl),
-        api.post(fetchGmailEmailsUrl),
+        api.post(gmailEmailsUrl),
+        api.get(briefsUrl),
       ]);
       //   setIsPremiumUser(userStatusResponse.data.isPremium);
       emailsRef.current = emailsResponse.data;
+      setBriefs(briefsResponse.data);
       setFilteredEmails(emailsResponse.data);
     } finally {
       setIsLoading(false);
@@ -98,7 +92,7 @@ export const UserHomePage: React.FC = () => {
   };
 
   const handleCloseEmail = () => {
-    setSelectedEmail(undefined);
+    setSelectedEmail(null);
   };
 
   const toggleMenu = () => {
@@ -136,6 +130,21 @@ export const UserHomePage: React.FC = () => {
       }, 300);
     }
   };
+  const onShowBriefClick = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    emailId: string
+  ) => {
+    e.stopPropagation();
+    const relevantBrief = briefs.find((brief) => brief.id === emailId);
+    if (relevantBrief) {
+      setSelectedBrief(relevantBrief);
+    }
+  };
+
+  const onGenerateBriefSuccess = async () => {
+    const briefsResponse = await api.get(briefsUrl);
+    setBriefs(briefsResponse.data);
+  };
 
   const handleLogout = async () => {
     await logout();
@@ -157,37 +166,24 @@ export const UserHomePage: React.FC = () => {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
-        <AppBar
-          position="fixed"
-          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        >
+        <AppBar position="fixed" style={{ backgroundImage: "none" }}>
           <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <IconButton
-                color="inherit"
-                aria-label="toggle menu"
-                onClick={toggleMenu}
-                edge="start"
-              >
-                {isMenuCollapsed ? <MenuIcon /> : <ChevronLeftIcon />}
-              </IconButton>
-              <div onClick={navigateToHome} className={classes.image} />
-              <TextField
-                inputRef={searchRef}
-                variant="outlined"
-                size="small"
-                placeholder="Search emails"
-                onChange={onSearchChange}
-                InputProps={{
-                  startAdornment: (
-                    <IconButton>
-                      <SearchIcon />
-                    </IconButton>
-                  ),
-                }}
-                className={classes.searchbox}
-              />
-            </div>
+            <div onClick={navigateToHome} className={classes.image} />
+            <TextField
+              inputRef={searchRef}
+              variant="outlined"
+              size="small"
+              placeholder="Search mail"
+              onChange={onSearchChange}
+              InputProps={{
+                startAdornment: (
+                  <IconButton>
+                    <SearchIcon />
+                  </IconButton>
+                ),
+              }}
+              className={classes.searchbox}
+            />
             <div className={classes.linksWrapper}>
               <Link to="/briefs" className={classes.link}>
                 Briefs
@@ -198,31 +194,30 @@ export const UserHomePage: React.FC = () => {
             </div>
           </Toolbar>
         </AppBar>
-        <div
+        {/* <div
           style={{
             width: isMenuCollapsed ? 60 : 200,
+            display: "flex",
+            flexDirection: "column",
             flexShrink: 0,
             transition: "width 0.5s",
             overflowX: "hidden",
           }}
         >
           <Toolbar />
-          <List>
+          <List className={classes.navLinksWrapper}>
             {menuItems.map((item) => (
               <ListItem
-                button
                 key={item.text}
-                sx={{
-                  justifyContent: isMenuCollapsed ? "center" : "flex-start",
+                style={{
+                  justifyContent: "center",
                 }}
               >
                 <Tooltip
                   title={isMenuCollapsed ? item.text : ""}
                   placement="right"
                 >
-                  <ListItemIcon
-                    style={isMenuCollapsed ? { minWidth: 0 } : { minWidth: 50 }}
-                  >
+                  <ListItemIcon style={{ minWidth: isMenuCollapsed ? 0 : 50 }}>
                     {item.icon}
                   </ListItemIcon>
                 </Tooltip>
@@ -230,7 +225,7 @@ export const UserHomePage: React.FC = () => {
               </ListItem>
             ))}
           </List>
-        </div>
+        </div> */}
         {isLoading ? (
           <div className={classes.loadingWrapper}>
             <CircularProgress size={50} />
@@ -241,13 +236,13 @@ export const UserHomePage: React.FC = () => {
               flexGrow: 1,
               flexShrink: 1,
               minWidth: 0,
+              height: "100%",
               display: "flex",
               flexDirection: "column",
-              height: "100%",
             }}
           >
             <Toolbar />
-            <Box
+            {/* <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
@@ -256,7 +251,8 @@ export const UserHomePage: React.FC = () => {
               }}
             >
               <Checkbox
-                checked={selectedEmails.length === filteredEmails.length}
+                size="small"
+                checked={isCheckboxAllSelected}
                 onChange={handleSelectAll}
                 indeterminate={
                   selectedEmails.length > 0 &&
@@ -269,100 +265,84 @@ export const UserHomePage: React.FC = () => {
               <IconButton>
                 <MoreVertIcon />
               </IconButton>
-            </Box>
-            <div style={{ flexGrow: 1, display: "flex", overflow: "hidden" }}>
-              <Paper className={classes.emailsWrapper}>
+            </Box> */}
+            <div className={classes.emailsWrapper}>
+              <Paper className={classes.emailsPaper}>
                 {filteredEmails.map((email) => (
                   <div
                     key={email.id}
                     onClick={() => handleEmailClick(email)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      padding: 8,
-                      borderBottom: "1px solid rgba(255, 255, 255, 0.12)",
-                      cursor: "pointer",
-                      backgroundColor:
-                        selectedEmail?.id === email.id
-                          ? "rgba(82, 189, 149, 0.2)"
-                          : "inherit",
-                    }}
+                    className={
+                      selectedEmail?.id === email.id
+                        ? classes.emailWrapperSelected
+                        : classes.emailWrapper
+                    }
                   >
-                    <div
+                    {/* <Checkbox
+                      size="small"
+                      checked={selectedEmails.includes(email.id)}
+                      onChange={() => handleCheckboxChange(email.id)}
+                      onClick={(e) => e.stopPropagation()}
+                    /> */}
+                    <Typography
+                      variant="body2"
                       style={{
-                        flexGrow: 1,
-                        width: "100%",
-                        display: "flex",
-                        alignItems: "center",
+                        width: 200,
+                        flexShrink: 0,
+                        fontWeight: "bold",
                       }}
                     >
-                      <Checkbox
-                        checked={selectedEmails.includes(email.id)}
-                        onChange={() => handleCheckboxChange(email.id)}
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                      <Typography
-                        variant="body2"
-                        style={{
-                          width: 200,
-                          flexShrink: 0,
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {email.sender.split("<")[0]}
+                      {email.sender.replace(/"/g, "").split("<")[0]}
+                    </Typography>
+                    <div style={{ flexGrow: 1, minWidth: 0 }}>
+                      <Typography variant="body2">{email.subject}</Typography>
+                      <Typography variant="body2" color="text.secondary" noWrap>
+                        {email.snippet}
                       </Typography>
-                      <div style={{ flexGrow: 1, minWidth: 0 }}>
-                        <Typography variant="body2">{email.subject}</Typography>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          noWrap
-                        >
-                          {email.snippet}
-                        </Typography>
-                      </div>
                     </div>
+                    {briefsIds.includes(email.id) && (
+                      <div className={classes.emailActions}>
+                        <Button
+                          variant="outlined"
+                          onClick={(e) => onShowBriefClick(e, email.id)}
+                          className={classes.showBriefButton}
+                        >
+                          Show brief
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 ))}
               </Paper>
               {selectedEmail && (
-                <Paper
-                  style={{
-                    width: "50%",
-                    display: "flex",
-                    justifyContent: "center",
-                    overflow: "auto",
-                    position: "relative",
-                    flexGrow: 1,
-                    flexShrink: 0,
-                    padding: 32,
-                    backgroundImage: "none",
-                    borderLeft: "1px solid dimgrey",
-                  }}
-                >
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: sanitizedHTML.current,
-                    }}
-                  />
-                  <IconButton
-                    onClick={handleCloseEmail}
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      right: 8,
-                      color: "white",
-                      padding: 4,
-                    }}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                </Paper>
+                <EmailViewer
+                  {...selectedEmail}
+                  hasBrief={briefsIds.includes(selectedEmail.id)}
+                  onShowBriefClick={onShowBriefClick}
+                  onClose={handleCloseEmail}
+                  onGenerateBriefSuccess={onGenerateBriefSuccess}
+                />
               )}
             </div>
           </div>
         )}
       </Box>
+      {selectedBrief && (
+        <Dialog
+          open
+          onClose={() => setSelectedBrief(null)}
+          PaperProps={{ className: classes.briefDialog }}
+        >
+          <BriefViewer {...selectedBrief} />
+          <Button
+            variant="contained"
+            disabled={isLoading}
+            onClick={() => setSelectedBrief(null)}
+          >
+            Close
+          </Button>
+        </Dialog>
+      )}
     </ThemeProvider>
   );
 };

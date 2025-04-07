@@ -47,7 +47,7 @@ export const signInWithGoogle = async (): Promise<void> => {
   try {
     const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=908421014283-07c2rqi65hmg22s6vmss7tvc82q0bsl1.apps.googleusercontent.com&redirect_uri=${encodeURIComponent(
       `${apiBaseUrl}/auth/google/callback`
-    )}&response_type=code&scope=openid email profile https://www.googleapis.com/auth/gmail.readonly&access_type=offline&prompt=consent`;
+    )}&response_type=code&scope=openid email profile https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/tasks&access_type=offline&prompt=consent`;
 
     window.open(oauthUrl, "_blank", "width=500,height=600");
     window.addEventListener("message", async (event) => {

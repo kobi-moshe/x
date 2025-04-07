@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { historyUrl } from "./utils";
 import { CircularProgress } from "@mui/material";
 import { Header } from "../Header";
 import api from "../api";
@@ -7,6 +6,7 @@ import { useStyles } from "./styles";
 import { BriefViewer } from "../BriefViewer";
 import { BriefData } from "../common";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import { briefsUrl } from "./utils";
 // import ReactGA from "react-ga4";
 
 export const HistoryPage: React.FC = () => {
@@ -21,7 +21,7 @@ export const HistoryPage: React.FC = () => {
 
   const fetchInitData = async () => {
     try {
-      const response = await api.get(historyUrl);
+      const response = await api.get(briefsUrl);
       setBriefs(response.data);
       setIsLoading(false);
     } finally {

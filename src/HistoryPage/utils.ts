@@ -1,1 +1,1 @@
-export const historyUrl = 'briefs';
+export const briefsUrl = "briefs";
