@@ -78,6 +78,7 @@ export const signInWithGoogle = async (): Promise<void> => {
 
 export const logout = async (): Promise<void> => {
   try {
+    await api.delete("token");
     await auth.signOut();
     localStorage.removeItem("token");
   } catch (error) {
