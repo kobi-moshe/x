@@ -70,6 +70,9 @@ export const useStyles = makeStyles((theme: Theme) => ({
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
+      [theme.breakpoints.down("sm")]: {
+        padding: theme.spacing(2),
+      },
     },
     "& .MuiInputBase-root": {
       borderRadius: 50,

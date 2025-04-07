@@ -58,7 +58,6 @@ export const UserHomePage: React.FC = () => {
   const [selectedEmail, setSelectedEmail] = useState<EmailData | null>();
   const [briefs, setBriefs] = useState<Array<BriefData>>([]);
   const [selectedBrief, setSelectedBrief] = useState<BriefData | null>();
-  const [isPremiumUser, setIsPremiumUser] = useState(false);
   const [currentTab, setCurrentTab] = useState<CurrentTab>("inbox");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -91,20 +90,19 @@ export const UserHomePage: React.FC = () => {
     },
   ];
 
-  const fetchInitData = async () => {
+  const fetchInitData = () => {
     try {
       setIsLoading(true);
-      const [userStatusResponse, emailsResponse, briefsResponse] =
-        await Promise.all([
-          api.get(userMetadataUrl),
-          api.post(gmailEmailsUrl),
-          api.get(briefsUrl),
-        ]);
-      setIsPremiumUser(userStatusResponse.data.isPremium);
-      setBriefs(briefsResponse.data);
-      emailsRef.current = emailsResponse.data;
-      setFilteredEmails(emailsResponse.data);
-      setUserMetadata(userStatusResponse.data);
+      api.get(userMetadataUrl).then((response) => {
+        setUserMetadata(response.data);
+      });
+      api.post(gmailEmailsUrl).then((response) => {
+        emailsRef.current = response.data;
+        setFilteredEmails(response.data);
+      });
+      api.get(briefsUrl).then((response) => {
+        setBriefs(response.data);
+      });
     } finally {
       setIsLoading(false);
     }
@@ -186,7 +184,7 @@ export const UserHomePage: React.FC = () => {
               hasBrief={briefsIds.includes(selectedEmail.id)}
               onShowBriefClick={onShowBriefClick}
               setBriefs={setBriefs}
-              isPremiumUser={isPremiumUser}
+              isPremiumUser={!!userMetadata?.isPremium}
             />
           )}
         </div>
@@ -202,9 +200,9 @@ export const UserHomePage: React.FC = () => {
     currentTab,
     filteredEmails,
     isLoading,
-    isPremiumUser,
     onShowBriefClick,
     selectedEmail,
+    userMetadata?.isPremium,
   ]);
 
   return (

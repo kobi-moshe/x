@@ -36,7 +36,7 @@ export const UserAvatar: React.FC<
   };
 
   return (
-    <div className={clsx(!firstLetter ? classes.wrapperLoading : className)}>
+    <div className={clsx(className)}>
       <IconButton onClick={handleClick} size="small">
         <Avatar className={classes.avatar}>{firstLetter}</Avatar>
       </IconButton>
