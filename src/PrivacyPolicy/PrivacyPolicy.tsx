@@ -492,7 +492,7 @@ export const PrivacyPolicy: React.FC = () => {
         If you have any questions about this Privacy Policy, You can contact us:
       </p>
       <ul>
-        <li>By email: mailbriefco@gmail.com</li>
+        <li>By email: mailbriefsup@gmail.com</li>
       </ul>
     </div>
   );

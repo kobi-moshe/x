@@ -27,6 +27,8 @@ import {
   ListItemIcon,
   ListItemText,
   Paper,
+  Typography,
+  Button,
 } from "@mui/material";
 import {
   Close,
@@ -48,6 +50,8 @@ import { CurrentTab } from "./types";
 import { BriefsBoard } from "../BriefsBoard";
 import { EmailViewer } from "../EmailViewer";
 import { EmailRow } from "../EmailRow";
+import coin from "/coin.png";
+import { Credits } from "../Credits";
 
 export const UserHomePage: React.FC = () => {
   const classes = useStyles();
@@ -90,13 +94,12 @@ export const UserHomePage: React.FC = () => {
     },
   ];
 
-  const fetchInitData = () => {
+  const fetchInitData = async () => {
     try {
       setIsLoading(true);
-      api.get(userMetadataUrl).then((response) => {
-        setUserMetadata(response.data);
-      });
-      api.post(gmailEmailsUrl).then((response) => {
+      const userMetadataResponse = await api.get(userMetadataUrl);
+      setUserMetadata(userMetadataResponse.data);
+      api.get(gmailEmailsUrl).then((response) => {
         emailsRef.current = response.data;
         setFilteredEmails(response.data);
       });
@@ -185,6 +188,7 @@ export const UserHomePage: React.FC = () => {
               onShowBriefClick={onShowBriefClick}
               setBriefs={setBriefs}
               isPremiumUser={!!userMetadata?.isPremium}
+              setUserMetadata={setUserMetadata}
             />
           )}
         </div>
@@ -225,7 +229,7 @@ export const UserHomePage: React.FC = () => {
               inputRef={searchRef}
               variant="outlined"
               size="small"
-              placeholder="Search mail"
+              placeholder="Search mail..."
               onChange={onSearchChange}
               InputProps={{
                 startAdornment: (
@@ -236,6 +240,7 @@ export const UserHomePage: React.FC = () => {
               }}
               className={classes.searchbox}
             />
+            <Credits credits={userMetadata?.credits} />
           </Toolbar>
         </AppBar>
         <div
@@ -277,6 +282,7 @@ export const UserHomePage: React.FC = () => {
         </div>
         {Content}
         <AppBar className={classes.bottomAppBar}>
+          <Credits credits={userMetadata?.credits} isSmallScreen />
           <UserAvatar {...userMetadata} />
           {menuItems.map((item) => (
             <IconButton

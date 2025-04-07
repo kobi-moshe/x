@@ -9,6 +9,7 @@ import { EmailAvatar, briefsUrl, Typewriter } from "../common";
 import api from "../api";
 import { generateBriefUrl } from "./utils";
 import moment from "moment";
+import { userMetadataUrl } from "../UserHomePage/utils";
 
 export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
   const {
@@ -24,6 +25,7 @@ export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
     onShowBriefClick,
     setBriefs,
     isPremiumUser,
+    setUserMetadata,
   } = props;
   const classes = useStyles();
   const [isGeneratingBrief, setIsGeneratingBrief] = useState(false);
@@ -53,17 +55,28 @@ export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
       try {
         setIsGeneratingBrief(true);
         await api.post(generateBriefUrl, data);
-        const briefsResponse = await api.get(briefsUrl);
         toast("Brief generated successfully!", {
           type: "success",
         });
-        setBriefs(briefsResponse.data);
-        setTimeout(() => briefButtonRef.current?.click(), 500);
+        api.get(userMetadataUrl).then((response) => {
+          setUserMetadata(response.data);
+        });
+        api.get(briefsUrl).then((response) => {
+          setBriefs(response.data);
+          setTimeout(() => briefButtonRef.current?.click(), 500);
+        });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        if (error.response.data.message === "Insufficient credits") {
+          toast("Insufficient credits for generation", {
+            type: "error",
+          });
+        }
       } finally {
         setIsGeneratingBrief(false);
       }
     },
-    [setBriefs]
+    [setBriefs, setUserMetadata]
   );
 
   const handleClick = useCallback(
@@ -138,7 +151,7 @@ export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
           />
           <Typography variant="body2">{from}</Typography>
         </div>
-        <Typography variant="caption">{date}</Typography>
+        {sentDate && <Typography variant="caption">{date}</Typography>}
       </div>
       <div className={classes.briefButtonWrapper}>{BriefButton}</div>
       <div className={classes.contentWrapper}>

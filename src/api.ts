@@ -62,7 +62,7 @@ api.interceptors.response.use(
     if (
       error.response &&
       error.response.status === 401 &&
-      originalRequest._retryCount < 5
+      originalRequest._retryCount < 2
     ) {
       originalRequest._retryCount++;
       await new Promise((resolve) => setTimeout(resolve, 2000));

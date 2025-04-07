@@ -27,4 +27,5 @@ export type UserMetadata = {
   email: string;
   name: string;
   isPremium: boolean;
+  credits: number;
 };

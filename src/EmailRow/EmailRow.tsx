@@ -71,9 +71,11 @@ export const EmailRow: React.FC<EmailRowProps> = (props) => {
             </Tooltip>
           </IconButton>
         )}
-        <Typography variant="caption" className={classes.date}>
-          {date}
-        </Typography>
+        {sentDate && (
+          <Typography variant="caption" className={classes.date}>
+            {date}
+          </Typography>
+        )}
       </div>
     </div>
   );

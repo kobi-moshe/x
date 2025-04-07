@@ -19,6 +19,7 @@ import { PrivacyPolicy } from "./PrivacyPolicy";
 import { TermsConditions } from "./TermsConditions";
 // import ReactGA from "react-ga4";
 import { MainContainer } from "./MainContainer";
+import { PaymentSuccess } from "./PaymentSuccess";
 
 const App: React.FC = () => {
   const tokenStorage = localStorage.getItem("token");
@@ -56,6 +57,7 @@ const App: React.FC = () => {
               path="/briefs"
               element={token ? <BriefsBoard /> : <Navigate to="/" />}
             />
+            <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<TermsConditions />} />
           </Routes>

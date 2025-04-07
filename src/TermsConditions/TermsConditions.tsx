@@ -285,7 +285,7 @@ export const TermsConditions: React.FC = () => {
         contact us:
       </p>
       <ul>
-        <li>By email: mailbriefco@gmail.com</li>
+        <li>By email: mailbriefsup@gmail.com</li>
       </ul>
     </div>
   );

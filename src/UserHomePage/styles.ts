@@ -78,6 +78,28 @@ export const useStyles = makeStyles((theme: Theme) => ({
       borderRadius: 50,
     },
   },
+  tokensIndicatorWrapper: {
+    "&.MuiButton-root": {
+      height: 30,
+      position: "absolute",
+      right: theme.spacing(3),
+      display: "flex",
+      alignItems: "center",
+      color: darkTheme.palette.primary.main,
+      border: `1px solid ${theme.palette.grey[800]}`,
+      borderRadius: 50,
+      [theme.breakpoints.down("sm")]: {
+        display: "none",
+      },
+    },
+  },
+  tokensIndicatorWrapperSmallScreen: {
+    display: "flex",
+    alignItems: "center",
+    color: darkTheme.palette.primary.main,
+    borderRadius: 50,
+    gap: theme.spacing(0.5),
+  },
   navLinksContainerWrapper: {
     width: 200,
     display: "flex",

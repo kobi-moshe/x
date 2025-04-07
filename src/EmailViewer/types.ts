@@ -1,4 +1,4 @@
-import { BriefData, EmailData } from "../common";
+import { BriefData, EmailData, UserMetadata } from "../common";
 
 export type EmailViewerProps = EmailData & {
   setSelectedEmail: (email: null) => void;
@@ -9,6 +9,7 @@ export type EmailViewerProps = EmailData & {
   ) => void;
   setBriefs: (briefs: Array<BriefData>) => void;
   isPremiumUser: boolean;
+  setUserMetadata: (metadata: UserMetadata) => void;
 };
 
 export type GenerateBriefServerData = {
