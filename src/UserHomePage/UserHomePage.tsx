@@ -6,11 +6,9 @@ import {
   //   ListItem,
   //   ListItemIcon,
   //   ListItemText,
-  Typography,
   TextField,
   IconButton,
   Box,
-  Paper,
   //   Checkbox,
   ThemeProvider,
   CssBaseline,
@@ -18,6 +16,7 @@ import {
   CircularProgress,
   Button,
   Dialog,
+  Paper,
 } from "@mui/material";
 import {
   //   Inbox as InboxIcon,
@@ -31,31 +30,29 @@ import {
   //   MoreVert as MoreVertIcon,
 } from "@mui/icons-material";
 import api from "../api";
-import DOMPurify from "dompurify";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../authService";
 import { darkTheme, useStyles } from "./styles";
-import { EmailViewer } from "./EmailViewer";
-import { BriefData } from "../common";
+import { BriefData, EmailData } from "../common";
 import { briefsUrl } from "../HistoryPage/utils";
 import { BriefViewer } from "../BriefViewer";
-import { EmailType } from "./types";
 import { gmailEmailsUrl } from "./utils";
+import { EmailViewer } from "../EmailViewer";
+import { EmailRow } from "../EmailRow";
 
 export const UserHomePage: React.FC = () => {
   const classes = useStyles();
-  const [selectedEmail, setSelectedEmail] = useState<EmailType | null>();
+  const [selectedEmail, setSelectedEmail] = useState<EmailData | null>();
   //   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   //   const [selectedEmails, setSelectedEmails] = useState<Array<string>>([]);
-  const [filteredEmails, setFilteredEmails] = useState<Array<EmailType>>([]);
+  const [filteredEmails, setFilteredEmails] = useState<Array<EmailData>>([]);
   const [briefs, setBriefs] = useState<Array<BriefData>>([]);
   const [selectedBrief, setSelectedBrief] = useState<BriefData | null>();
   //   const [isPremiumUser, setIsPremiumUser] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const sanitizedHTML = useRef("");
-  const emailsRef = useRef<Array<EmailType>>([]);
+  const emailsRef = useRef<Array<EmailData>>([]);
   const searchRef = useRef<HTMLInputElement>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -82,18 +79,6 @@ export const UserHomePage: React.FC = () => {
   useEffect(() => {
     fetchInitData();
   }, []);
-
-  const handleEmailClick = (email: EmailType) => {
-    setSelectedEmail(email);
-    sanitizedHTML.current = DOMPurify.sanitize(email.htmlContent, {
-      ADD_TAGS: ["style"],
-      ADD_ATTR: ["target"],
-    });
-  };
-
-  const handleCloseEmail = () => {
-    setSelectedEmail(null);
-  };
 
   //   const toggleMenu = () => {
   //     setIsMenuCollapsed(!isMenuCollapsed);
@@ -269,67 +254,21 @@ export const UserHomePage: React.FC = () => {
             <div className={classes.emailsWrapper}>
               <Paper className={classes.emailsPaper}>
                 {filteredEmails.map((email) => (
-                  <div
-                    key={email.id}
-                    onClick={() => handleEmailClick(email)}
-                    className={
-                      selectedEmail?.id === email.id
-                        ? classes.emailWrapperSelected
-                        : classes.emailWrapper
-                    }
-                  >
-                    <img
-                      src={`https://cdn.brandfetch.io/${email.domain}`}
-                      style={{
-                        width: 30,
-                        height: 30,
-                        marginRight: 12,
-                        borderRadius: 8,
-                        backgroundColor: "#E8E8E8",
-                      }}
-                    />
-                    {/* <Checkbox
-                      size="small"
-                      checked={selectedEmails.includes(email.id)}
-                      onChange={() => handleCheckboxChange(email.id)}
-                      onClick={(e) => e.stopPropagation()}
-                    /> */}
-                    <Typography
-                      variant="body2"
-                      style={{
-                        width: 200,
-                        flexShrink: 0,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {email.sender.replace(/"/g, "").split("<")[0]}
-                    </Typography>
-                    <div style={{ flexGrow: 1, minWidth: 0 }}>
-                      <Typography variant="body2">{email.subject}</Typography>
-                      <Typography variant="body2" color="text.secondary" noWrap>
-                        {email.snippet}
-                      </Typography>
-                    </div>
-                    {briefsIds.includes(email.id) && (
-                      <div className={classes.emailActions}>
-                        <Button
-                          variant="outlined"
-                          onClick={(e) => onShowBriefClick(e, email.id)}
-                          className={classes.showBriefButton}
-                        >
-                          Show brief
-                        </Button>
-                      </div>
-                    )}
-                  </div>
+                  <EmailRow
+                    {...email}
+                    selectedEmail={selectedEmail}
+                    setSelectedEmail={setSelectedEmail}
+                    hasBrief={briefsIds.includes(email.id)}
+                    onShowBriefClick={onShowBriefClick}
+                  />
                 ))}
               </Paper>
               {selectedEmail && (
                 <EmailViewer
                   {...selectedEmail}
+                  setSelectedEmail={setSelectedEmail}
                   hasBrief={briefsIds.includes(selectedEmail.id)}
                   onShowBriefClick={onShowBriefClick}
-                  onClose={handleCloseEmail}
                   onGenerateBriefSuccess={onGenerateBriefSuccess}
                 />
               )}

@@ -11,3 +11,14 @@ export type BriefData = {
   responses: PossibleResponses;
   actions: Array<string>;
 };
+
+export type EmailData = {
+  id: string;
+  subject: string;
+  sender: string;
+  sentDate: string;
+  domain: string;
+  snippet: string;
+  htmlContent: string;
+  cleanContent: string;
+};

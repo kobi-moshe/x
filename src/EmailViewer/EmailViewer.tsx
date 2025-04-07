@@ -1,28 +1,38 @@
 import DOMPurify from "dompurify";
 import { Close as CloseIcon } from "@mui/icons-material";
-import { Button, IconButton, Paper, Tooltip } from "@mui/material";
-import { EmailViewerProps, GenerateBriefServerData } from "../types";
-import { Typewriter } from "../../common";
-import api from "../../api";
-import { generateBriefUrl } from "../utils";
+import { Button, IconButton, Paper, Tooltip, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import { useCallback, useMemo, useState } from "react";
 import { useStyles } from "./styles";
+import { EmailViewerProps, GenerateBriefServerData } from "./types";
+import { Typewriter } from "../common";
+import api from "../api";
+import { generateBriefUrl } from "./utils";
+import moment from "moment";
 
 export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
   const {
     id,
     subject,
+    sender,
+    domain,
+    sentDate,
     htmlContent,
     cleanContent,
-    isPremiumUser,
+    setSelectedEmail,
     hasBrief,
     onShowBriefClick,
     onGenerateBriefSuccess,
-    onClose,
+    isPremiumUser,
   } = props;
   const classes = useStyles();
   const [isGeneratingBrief, setIsGeneratingBrief] = useState(false);
+
+  const from = sender.replace(/"|"$/g, "");
+  const localTime = moment(sentDate);
+  const date = `${localTime.format(
+    "MMM D, ddd, h:mm a"
+  )} (${localTime.fromNow()})`;
 
   const isActionButtonDisabled = !isPremiumUser && cleanContent.length > 4000;
   const actionTooltip = isActionButtonDisabled
@@ -58,8 +68,8 @@ export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
     [cleanContent, generateBrief, id, subject]
   );
 
-  const handleCloseEmail = () => {
-    onClose();
+  const onClose = () => {
+    setSelectedEmail(null);
   };
 
   const BriefButton = useMemo(() => {
@@ -111,53 +121,26 @@ export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
   ]);
 
   return (
-    <Paper
-      style={{
-        width: "50%",
-        overflow: "auto",
-        position: "relative",
-        flexGrow: 1,
-        flexShrink: 0,
-        padding: 32,
-        backgroundImage: "none",
-        borderLeft: "1px solid dimgrey",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 16,
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {BriefButton}
+    <Paper className={classes.wrapper}>
+      <div className={classes.headerWrapper}>
+        <div className={classes.headerLeftWrapper}>
+          <img
+            src={`https://cdn.brandfetch.io/${domain}`}
+            className={classes.avatar}
+          />
+          <Typography variant="body2">{from}</Typography>
         </div>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: sanitizedHTML,
-          }}
-        />
-        <IconButton
-          onClick={handleCloseEmail}
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 8,
-            color: "white",
-            padding: 4,
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
+        <Typography variant="caption">{date}</Typography>
       </div>
+      <div className={classes.briefButtonWrapper}>{BriefButton}</div>
+      <div
+        dangerouslySetInnerHTML={{
+          __html: sanitizedHTML,
+        }}
+      />
+      <IconButton onClick={onClose} className={classes.closeIcon}>
+        <CloseIcon />
+      </IconButton>
     </Paper>
   );
 };
