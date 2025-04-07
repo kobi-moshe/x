@@ -55,6 +55,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
       textTransform: "capitalize",
     },
   },
+  contentWrapper: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   closeIcon: {
     "&.MuiIconButton-root": {
       position: "absolute",

@@ -133,11 +133,13 @@ export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
         <Typography variant="caption">{date}</Typography>
       </div>
       <div className={classes.briefButtonWrapper}>{BriefButton}</div>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: sanitizedHTML,
-        }}
-      />
+      <div className={classes.contentWrapper}>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: sanitizedHTML,
+          }}
+        />
+      </div>
       <IconButton onClick={onClose} className={classes.closeIcon}>
         <CloseIcon />
       </IconButton>
