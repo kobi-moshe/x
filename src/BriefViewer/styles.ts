@@ -104,13 +104,17 @@ export const useStyles = makeStyles((theme: Theme) => ({
     alignItems: "center",
     gap: 4,
   },
-  dialogWrapper: {
+  dialogPaper: {
+    "&.MuiPaper-root": {
+      backgroundImage: "none !important",
+    },
     padding: theme.spacing(2),
   },
   dialogActionsWrapper: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    margin: "0 auto",
     padding: theme.spacing(2),
   },
   closeIcon: {
@@ -129,7 +133,10 @@ export const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   loadingWrapper: {
-    margin: "0 auto",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: theme.spacing(2, 0, 4, 0),
   },
   taskCreatedToast: {
     whiteSpace: "nowrap",

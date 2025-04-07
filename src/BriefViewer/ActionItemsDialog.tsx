@@ -59,7 +59,7 @@ export const ActionItemsDialog: React.FC<ActionItemsDialogProps> = (props) => {
       open
       keepMounted
       TransitionComponent={Transition}
-      PaperProps={{ className: classes.dialogWrapper }}
+      PaperProps={{ className: classes.dialogPaper }}
     >
       <Close
         fontSize="small"
@@ -72,7 +72,9 @@ export const ActionItemsDialog: React.FC<ActionItemsDialogProps> = (props) => {
         </Typography>
       </DialogTitle>
       {isLoading ? (
-        <CircularProgress className={classes.loadingWrapper} />
+        <div className={classes.loadingWrapper}>
+          <CircularProgress />
+        </div>
       ) : (
         <DialogContent>
           {actionChips.map((action, index) => (
