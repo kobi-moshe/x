@@ -14,12 +14,11 @@ import {
   CssBaseline,
   //   Tooltip,
   CircularProgress,
-  Button,
   Dialog,
   Paper,
 } from "@mui/material";
 import {
-    Close,
+  Close,
   //   Inbox as InboxIcon,
   //   Send as SendIcon,
   //   Drafts as DraftsIcon,
@@ -125,11 +124,6 @@ export const UserHomePage: React.FC = () => {
     if (relevantBrief) {
       setSelectedBrief(relevantBrief);
     }
-  };
-
-  const onGenerateBriefSuccess = async () => {
-    const briefsResponse = await api.get(briefsUrl);
-    setBriefs(briefsResponse.data);
   };
 
   const onSelectedBriefClose = () => {
