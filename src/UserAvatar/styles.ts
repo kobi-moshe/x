@@ -3,7 +3,6 @@ import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) => ({
   wrapperHidden: {
-    opacity: 0,
     pointerEvents: "none",
   },
   avatar: {

@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { Button, Typography } from "@mui/material";
 import { useStyles } from "./styles";
 import { EmailRowProps } from "./types";
-import { Avatar, EmailData } from "../common";
+import { EmailAvatar, EmailData } from "../common";
 import DOMPurify from "dompurify";
 import moment from "moment";
 
@@ -42,7 +42,7 @@ export const EmailRow: React.FC<EmailRowProps> = (props) => {
           : classes.emailWrapper
       }
     >
-      <Avatar
+      <EmailAvatar
         key={domain}
         url={`https://cdn.brandfetch.io/${domain}`}
         senderName={senderName}

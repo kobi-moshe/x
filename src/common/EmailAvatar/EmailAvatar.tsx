@@ -3,7 +3,7 @@ import { Avatar as MuiAvatar } from "@mui/material";
 import { AvatarProps } from "./types";
 import { useStyles } from "./styles";
 
-export const Avatar: React.FC<AvatarProps> = ({ url, senderName }) => {
+export const EmailAvatar: React.FC<AvatarProps> = ({ url, senderName }) => {
   const classes = useStyles();
   const [logoSrc, setLogoSrc] = useState(url);
   const isTransparentLogo = logoSrc !== url;

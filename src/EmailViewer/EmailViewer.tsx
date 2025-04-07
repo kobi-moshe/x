@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { useCallback, useMemo, useState } from "react";
 import { useStyles } from "./styles";
 import { EmailViewerProps, GenerateBriefServerData } from "./types";
-import { Avatar, briefsUrl, Typewriter } from "../common";
+import { EmailAvatar, briefsUrl, Typewriter } from "../common";
 import api from "../api";
 import { generateBriefUrl } from "./utils";
 import moment from "moment";
@@ -128,7 +128,7 @@ export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
     <Paper className={classes.wrapper}>
       <div className={classes.headerWrapper}>
         <div className={classes.headerLeftWrapper}>
-          <Avatar
+          <EmailAvatar
             key={domain}
             url={`https://cdn.brandfetch.io/${domain}`}
             senderName={senderName}
