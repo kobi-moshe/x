@@ -278,6 +278,16 @@ export const UserHomePage: React.FC = () => {
                         : classes.emailWrapper
                     }
                   >
+                    <img
+                      src={`https://cdn.brandfetch.io/${email.domain}`}
+                      style={{
+                        width: 30,
+                        height: 30,
+                        marginRight: 12,
+                        borderRadius: 8,
+                        backgroundColor: "#E8E8E8",
+                      }}
+                    />
                     {/* <Checkbox
                       size="small"
                       checked={selectedEmails.includes(email.id)}
