@@ -1,7 +1,7 @@
 import { Close } from "@mui/icons-material";
 import {
   Button,
-  Chip,
+  Checkbox,
   CircularProgress,
   Dialog,
   DialogActions,
@@ -10,7 +10,7 @@ import {
   Slide,
   Typography,
 } from "@mui/material";
-import { forwardRef, useState } from "react";
+import { forwardRef, useCallback, useMemo, useState } from "react";
 import { ActionItemsDialogProps } from "./types";
 import { useStyles } from "./styles";
 import api from "../api";
@@ -25,12 +25,23 @@ const Transition = forwardRef(function Transition(props: any, ref) {
 export const ActionItemsDialog: React.FC<ActionItemsDialogProps> = (props) => {
   const { setIsOpen, actions, subject } = props;
   const classes = useStyles();
-  const [actionChips, setActionChips] = useState<Array<string>>(actions);
+  const [selectedActions, setSelectedActions] =
+    useState<Array<string>>(actions);
   const [isLoading, setIsLoading] = useState(false);
 
-  const onDeleteChip = (action: string) => {
-    setActionChips((prevState) => prevState.filter((chip) => chip !== action));
-  };
+  const onActionClick = useCallback(
+    (actionName: string) => {
+      const isActionChecked = selectedActions.includes(actionName);
+      if (isActionChecked) {
+        setSelectedActions((prevState) =>
+          prevState.filter((action) => action !== actionName)
+        );
+      } else {
+        setSelectedActions((prevState) => [...prevState, actionName]);
+      }
+    },
+    [selectedActions]
+  );
 
   const onCloseClick = () => {
     setIsOpen(false);
@@ -41,7 +52,7 @@ export const ActionItemsDialog: React.FC<ActionItemsDialogProps> = (props) => {
       setIsLoading(true);
       await api.post(tasksUrl, {
         listTitle: subject,
-        actionItems: actionChips,
+        actionItems: selectedActions,
       });
       toast("Successfully added to your Google Tasks!", {
         type: "success",
@@ -53,6 +64,25 @@ export const ActionItemsDialog: React.FC<ActionItemsDialogProps> = (props) => {
       onCloseClick();
     }
   };
+
+  const ActionsList = useMemo(
+    () =>
+      actions.map((action, index) => {
+        const isChecked = selectedActions.includes(action);
+
+        return (
+          <div
+            key={index}
+            onClick={() => onActionClick(action)}
+            style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+          >
+            <Checkbox checked={isChecked} />
+            <Typography>{action}</Typography>
+          </div>
+        );
+      }),
+    [actions, onActionClick, selectedActions]
+  );
 
   return (
     <Dialog
@@ -76,15 +106,7 @@ export const ActionItemsDialog: React.FC<ActionItemsDialogProps> = (props) => {
           <CircularProgress />
         </div>
       ) : (
-        <DialogContent>
-          {actionChips.map((action, index) => (
-            <Chip
-              key={index}
-              label={action}
-              onDelete={() => onDeleteChip(action)}
-            />
-          ))}
-        </DialogContent>
+        <DialogContent>{ActionsList}</DialogContent>
       )}
       <DialogActions className={classes.dialogActionsWrapper}>
         <Button

@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { useCallback, useMemo, useState } from "react";
 import { useStyles } from "./styles";
 import { EmailViewerProps, GenerateBriefServerData } from "./types";
-import { Typewriter } from "../common";
+import { Avatar, briefsUrl, Typewriter } from "../common";
 import api from "../api";
 import { generateBriefUrl } from "./utils";
 import moment from "moment";
@@ -22,12 +22,15 @@ export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
     setSelectedEmail,
     hasBrief,
     onShowBriefClick,
-    onGenerateBriefSuccess,
+    setBriefs,
     isPremiumUser,
   } = props;
   const classes = useStyles();
   const [isGeneratingBrief, setIsGeneratingBrief] = useState(false);
 
+  const matches = sender.match(/(.*)(?=<)/);
+  let senderName = matches ? matches[0].trim() : sender;
+  senderName = senderName.replace(/^"|"$/g, "");
   const from = sender.replace(/"|"$/g, "");
   const localTime = moment(sentDate);
   const date = `${localTime.format(
@@ -49,15 +52,16 @@ export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
       try {
         setIsGeneratingBrief(true);
         await api.post(generateBriefUrl, data);
+        const briefsResponse = await api.get(briefsUrl);
         toast("Brief generated successfully!", {
           type: "success",
         });
-        onGenerateBriefSuccess();
+        setBriefs(briefsResponse.data);
       } finally {
         setIsGeneratingBrief(false);
       }
     },
-    [onGenerateBriefSuccess]
+    [setBriefs]
   );
 
   const handleClick = useCallback(
@@ -124,9 +128,10 @@ export const EmailViewer: React.FC<EmailViewerProps> = (props) => {
     <Paper className={classes.wrapper}>
       <div className={classes.headerWrapper}>
         <div className={classes.headerLeftWrapper}>
-          <img
-            src={`https://cdn.brandfetch.io/${domain}`}
-            className={classes.avatar}
+          <Avatar
+            key={domain}
+            url={`https://cdn.brandfetch.io/${domain}`}
+            senderName={senderName}
           />
           <Typography variant="body2">{from}</Typography>
         </div>

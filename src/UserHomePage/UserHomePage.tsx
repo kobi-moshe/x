@@ -19,6 +19,7 @@ import {
   Paper,
 } from "@mui/material";
 import {
+    Close,
   //   Inbox as InboxIcon,
   //   Send as SendIcon,
   //   Drafts as DraftsIcon,
@@ -33,8 +34,7 @@ import api from "../api";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../authService";
 import { darkTheme, useStyles } from "./styles";
-import { BriefData, EmailData } from "../common";
-import { briefsUrl } from "../HistoryPage/utils";
+import { BriefData, briefsUrl, EmailData } from "../common";
 import { BriefViewer } from "../BriefViewer";
 import { gmailEmailsUrl, userStatusUrl } from "./utils";
 import { EmailViewer } from "../EmailViewer";
@@ -130,6 +130,10 @@ export const UserHomePage: React.FC = () => {
   const onGenerateBriefSuccess = async () => {
     const briefsResponse = await api.get(briefsUrl);
     setBriefs(briefsResponse.data);
+  };
+
+  const onSelectedBriefClose = () => {
+    setSelectedBrief(null);
   };
 
   const handleLogout = async () => {
@@ -256,6 +260,7 @@ export const UserHomePage: React.FC = () => {
               <Paper className={classes.emailsPaper}>
                 {filteredEmails.map((email) => (
                   <EmailRow
+                    key={email.id}
                     {...email}
                     selectedEmail={selectedEmail}
                     setSelectedEmail={setSelectedEmail}
@@ -270,7 +275,7 @@ export const UserHomePage: React.FC = () => {
                   setSelectedEmail={setSelectedEmail}
                   hasBrief={briefsIds.includes(selectedEmail.id)}
                   onShowBriefClick={onShowBriefClick}
-                  onGenerateBriefSuccess={onGenerateBriefSuccess}
+                  setBriefs={setBriefs}
                   isPremiumUser={isPremiumUser}
                 />
               )}
@@ -281,17 +286,15 @@ export const UserHomePage: React.FC = () => {
       {selectedBrief && (
         <Dialog
           open
-          onClose={() => setSelectedBrief(null)}
-          PaperProps={{ className: classes.briefDialog }}
+          onClose={onSelectedBriefClose}
+          classes={{ paper: classes.briefDialog }}
         >
           <BriefViewer {...selectedBrief} />
-          <Button
-            variant="contained"
-            disabled={isLoading}
-            onClick={() => setSelectedBrief(null)}
-          >
-            Close
-          </Button>
+          <Close
+            fontSize="small"
+            onClick={onSelectedBriefClose}
+            className={classes.closeIcon}
+          />
         </Dialog>
       )}
     </ThemeProvider>

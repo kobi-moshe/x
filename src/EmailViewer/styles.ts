@@ -23,13 +23,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     alignItems: "center",
   },
-  avatar: {
-    width: 30,
-    height: 30,
-    marginRight: theme.spacing(1.5),
-    borderRadius: 8,
-    backgroundColor: "#E8E8E8",
-  },
   briefButtonWrapper: {
     display: "flex",
     alignItems: "center",

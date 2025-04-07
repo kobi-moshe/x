@@ -27,6 +27,9 @@ export const useStyles = makeStyles((theme: Theme) => ({
   link: {
     textDecoration: "none",
     color: "#52BD95",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: theme.typography.caption.fontSize,
+    },
   },
   image: {
     height: 50,
@@ -71,8 +74,16 @@ export const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   briefDialog: {
-    "&.MuiPaper-root": {
-      backgroundImage: "none !important",
+    "& .MuiPaper-root": {
+      padding: 0,
+      overflowY: "auto",
     },
+    backgroundImage: "none !important",
+  },
+  closeIcon: {
+    position: "absolute",
+    top: theme.spacing(1),
+    right: theme.spacing(1),
+    cursor: "pointer",
   },
 }));

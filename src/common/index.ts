@@ -4,4 +4,6 @@ export * from "./Typewriter";
 export * from "../AuthPage";
 export * from "./CopyButton";
 export * from "./PulseAnimation";
+export * from "./Avatar";
 export * from "./types";
+export * from "./utils";

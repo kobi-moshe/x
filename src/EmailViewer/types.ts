@@ -1,4 +1,4 @@
-import { EmailData } from "../common";
+import { BriefData, EmailData } from "../common";
 
 export type EmailViewerProps = EmailData & {
   setSelectedEmail: (email: null) => void;
@@ -7,7 +7,7 @@ export type EmailViewerProps = EmailData & {
     e: React.MouseEvent<HTMLButtonElement>,
     emailId: string
   ) => void;
-  onGenerateBriefSuccess: () => void;
+  setBriefs: (briefs: Array<BriefData>) => void;
   isPremiumUser: boolean;
 };
 

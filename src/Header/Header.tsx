@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { FreeTrialButton } from "../common";
 import { useContext } from "react";
 import { AuthContext } from "../authContext";
@@ -25,10 +25,10 @@ export const Header: React.FC = () => {
       {token ? (
         <div className={classes.tokenButtonsWrapper}>
           <Link to="/briefs" className={classes.link}>
-            Briefs
+            <Typography>Briefs</Typography>
           </Link>
           <Link to="/" onClick={handleLogout} className={classes.link}>
-            Logout
+            <Typography>Logout</Typography>
           </Link>
         </div>
       ) : (

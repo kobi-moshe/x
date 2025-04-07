@@ -23,7 +23,9 @@ export const BriefViewer: React.FC<BriefData> = (props) => {
   return (
     <Card className={classes.card}>
       <CardContent className={classes.briefCardContent}>
-        <Typography variant="h6">{subject}</Typography>
+        <Typography variant="h6" style={{ color: "#52BD95" }}>
+          {subject}
+        </Typography>
         <div>
           <Typography variant="h6">Summary</Typography>
           <Typography>{summary}</Typography>

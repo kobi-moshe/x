@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { Button, Typography } from "@mui/material";
 import { useStyles } from "./styles";
 import { EmailRowProps } from "./types";
-import { EmailData } from "../common";
+import { Avatar, EmailData } from "../common";
 import DOMPurify from "dompurify";
 import moment from "moment";
 
@@ -20,8 +20,8 @@ export const EmailRow: React.FC<EmailRowProps> = (props) => {
   const sanitizedHTML = useRef("");
 
   const matches = sender.match(/(.*)(?=<)/);
-  const senderName = matches ? matches[0].trim() : sender;
-  const from = senderName.replace(/^"|"$/g, "");
+  let senderName = matches ? matches[0].trim() : sender;
+  senderName = senderName.replace(/^"|"$/g, "");
   const date = moment(sentDate).format("MMM D");
 
   const handleEmailClick = (email: EmailData) => {
@@ -42,15 +42,10 @@ export const EmailRow: React.FC<EmailRowProps> = (props) => {
           : classes.emailWrapper
       }
     >
-      <img
-        src={`https://cdn.brandfetch.io/${domain}`}
-        style={{
-          width: 30,
-          height: 30,
-          marginRight: 12,
-          borderRadius: 8,
-          backgroundColor: "#E8E8E8",
-        }}
+      <Avatar
+        key={domain}
+        url={`https://cdn.brandfetch.io/${domain}`}
+        senderName={senderName}
       />
       {/* <Checkbox
             size="small"
@@ -69,7 +64,7 @@ export const EmailRow: React.FC<EmailRowProps> = (props) => {
           overflow: "hidden",
         }}
       >
-        {from}
+        {senderName}
       </Typography>
       <div style={{ flexGrow: 1, minWidth: 0 }}>
         <Typography variant="body2">{subject}</Typography>

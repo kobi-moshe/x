@@ -4,9 +4,8 @@ import { Header } from "../Header";
 import api from "../api";
 import { useStyles } from "./styles";
 import { BriefViewer } from "../BriefViewer";
-import { BriefData } from "../common";
+import { BriefData, briefsUrl } from "../common";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
-import { briefsUrl } from "./utils";
 // import ReactGA from "react-ga4";
 
 export const HistoryPage: React.FC = () => {
