@@ -50,10 +50,6 @@ const App: React.FC = () => {
             <Route path="/" element={<MainContainer />} />
             <Route
               path="/login"
-              element={token ? <Navigate to="/" /> : <AuthPage isSignIn />}
-            />
-            <Route
-              path="/signup"
               element={token ? <Navigate to="/" /> : <AuthPage />}
             />
             <Route

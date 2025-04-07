@@ -5,13 +5,15 @@ export const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {
     "&.MuiButton-root": {
       "&:hover": {
+        borderColor: "#52BD95",
         backgroundColor: "#52BD95",
       },
       width: "fit-content",
       padding: theme.spacing(2),
       textTransform: "none",
       borderRadius: theme.spacing(0.75),
-      backgroundColor: "#52BD95",
+      borderColor: "#52BD95",
+      color: "white",
     },
   },
 }));

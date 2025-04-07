@@ -8,6 +8,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     justifyContent: "space-between",
     padding: theme.spacing(2),
+    zIndex: 3,
     [theme.breakpoints.down("sm")]: {
       height: 40,
     },
@@ -42,15 +43,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   signInButton: {
     "&.MuiButton-root": {
-      width: "fit-content",
-      padding: theme.spacing(1, 2),
-      textTransform: "none",
-      borderRadius: theme.spacing(0.75),
-      color: "black",
-      backgroundColor: "white",
       "&:hover": {
-        backgroundColor: "white",
+        backgroundColor: "transparent",
       },
+      border: "1px solid #52BD95",
+      backgroundColor: "transparent",
     },
   },
 }));

@@ -11,7 +11,7 @@ export const LandingPage: React.FC = () => {
   return (
     <div className={classes.wrapper}>
       <HeroSection>
-        <Header />
+        <Header isLandingPage />
         <div className={classes.heroInnerWrapper}>
           <div className={classes.heroContentWrapper}>
             <div style={{ minHeight: 240 }}>

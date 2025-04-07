@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useStyles } from "./styles";
 import { FreeTrialButtonProps } from "./types";
 import clsx from "clsx";
+import google from "/google.svg";
 
 export const FreeTrialButton: React.FC<FreeTrialButtonProps> = ({
   className,
@@ -11,12 +12,13 @@ export const FreeTrialButton: React.FC<FreeTrialButtonProps> = ({
 
   return (
     <Button
+      startIcon={<img src={google} style={{ width: 25, height: 25 }} />}
       component={Link}
-      variant="contained"
-      to="/signup"
+      variant="outlined"
+      to="/login"
       className={clsx(classes.wrapper, className)}
     >
-      Try it for Free
+      Sign in with Google
     </Button>
   );
 };

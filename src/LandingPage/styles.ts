@@ -61,16 +61,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
       },
     },
   },
-  "@keyframes pulse": {
-    "0%": { transform: "scale(1)" },
-    "50%": { transform: "scale(1.05)" },
-    "100%": { transform: "scale(1)" },
-  },
   tryButton: {
     "&.MuiButton-root": {
-      // animation: "$pulse 1.5s infinite",
       padding: theme.spacing(2, 3.5),
       fontSize: theme.spacing(2.5),
+      backgroundColor: "#52BD95",
     },
   },
   secondSection: {

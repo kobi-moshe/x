@@ -8,38 +8,86 @@ export const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "column",
   },
   innerWrapper: {
+    width: "100%",
+    height: "100%",
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    flexGrow: 1,
+    position: "absolute",
+    gap: theme.spacing(2),
   },
-  card: {
-    width: 370,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    padding: 25,
-    [theme.breakpoints.up("md")]: {
-      padding: 40,
+  loginButton: {
+    "&.MuiButton-root": {
+      position: "relative",
+      overflow: "hidden",
+      color: "#fff",
+      background: "transparent",
+      border: "none",
+      padding: theme.spacing(3, 10),
+      [theme.breakpoints.down("sm")]: {
+        padding: theme.spacing(2, 4),
+      },
+      fontSize: "16px",
+      fontWeight: "bold",
+      cursor: "pointer",
+      transition: "all 0.3s ease",
+      "&::before": {
+        content: '""',
+        position: "absolute",
+        top: -2,
+        left: -2,
+        right: -2,
+        bottom: -2,
+        background: `linear-gradient(
+      90deg,
+      #ff00ff,
+      #00ffff,
+      #ff00ff,
+      #00ffff
+    )`,
+        backgroundSize: "400% 100%",
+        animation: "$trailingAnimation 4s linear infinite",
+        filter: "blur(5px)",
+        opacity: 1,
+      },
+      "&::after": {
+        content: '""',
+        position: "absolute",
+        inset: "3px",
+        background: "rgba(0, 0, 0, 0.85)",
+        zIndex: 1,
+      },
+      "& .button-content": {
+        position: "relative",
+        zIndex: 2,
+      },
+      "&:hover": {
+        transform: "scale(1.05)",
+        "&::after": {
+          background: "rgba(0, 0, 0, 0.7)",
+        },
+      },
+      "&:focus": {
+        outline: "none",
+        boxShadow: "0 0 0 3px rgba(0, 255, 255, 0.5)",
+      },
     },
   },
-  cardLoading: {
-    width: 370,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    position: "relative",
-    padding: 40,
-    opacity: 0.3,
+  "@keyframes trailingAnimation": {
+    "0%": {
+      backgroundPosition: "200% 0",
+    },
+    "100%": {
+      backgroundPosition: "-200% 0",
+    },
   },
-  form: {
-    minWidth: "75%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  errorText: {
+  agreementText: {
     textAlign: "center",
-    color: "red",
+    color: theme.palette.grey[500],
+    padding: theme.spacing(0, 2),
+    "& a": {
+      color: theme.palette.grey[400],
+    },
   },
 }));
