@@ -30,8 +30,7 @@ import {
   //   MoreVert as MoreVertIcon,
 } from "@mui/icons-material";
 import api from "../api";
-import { Link, useNavigate } from "react-router-dom";
-import { logout } from "../authService";
+import { Link } from "react-router-dom";
 import { darkTheme, useStyles } from "./styles";
 import { BriefData, briefsUrl, EmailData, UserMetadata } from "../common";
 import { BriefViewer } from "../BriefViewer";
