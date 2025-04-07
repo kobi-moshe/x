@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button } from "@mui/material";
 import { PaypalButtonProps } from "./types";
-import axios from "axios";
 import api from "../api";
 
 export const PaypalButton: React.FC<PaypalButtonProps> = (props) => {

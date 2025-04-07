@@ -27,8 +27,6 @@ import {
   ListItemIcon,
   ListItemText,
   Paper,
-  Typography,
-  Button,
 } from "@mui/material";
 import {
   Close,
@@ -50,7 +48,6 @@ import { CurrentTab } from "./types";
 import { BriefsBoard } from "../BriefsBoard";
 import { EmailViewer } from "../EmailViewer";
 import { EmailRow } from "../EmailRow";
-import coin from "/coin.png";
 import { Credits } from "../Credits";
 
 export const UserHomePage: React.FC = () => {
