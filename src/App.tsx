@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { AuthPage } from "./common";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { HistoryPage } from "./HistoryPage";
+import { BriefsBoard } from "./BriefsBoard";
 import { auth } from "./firebase";
 import { User } from "firebase/auth";
 import { theme } from "./styles/theme";
@@ -58,7 +58,7 @@ const App: React.FC = () => {
             />
             <Route
               path="/briefs"
-              element={token ? <HistoryPage /> : <Navigate to="/" />}
+              element={token ? <BriefsBoard /> : <Navigate to="/" />}
             />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<TermsConditions />} />

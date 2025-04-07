@@ -27,7 +27,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: theme.spacing(2),
+    margin: theme.spacing(2),
   },
   generatingBriefText: {
     color: "#52BD95",

@@ -3,16 +3,25 @@ import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {
-    minHeight: "100vh",
+    height: "100%",
+    width: "100%",
     display: "flex",
     flexDirection: "column",
     padding: theme.spacing(2),
+    overflow: "auto",
   },
-  loaderWrapper: {
+  centerWrapper: {
+    height: "100%",
+    width: "100%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    flexGrow: 1,
+  },
+  noItemsText: {
+    fontSize: theme.typography.h3.fontSize,
+    [theme.breakpoints.down("sm")]: {
+      fontSize: theme.typography.h5.fontSize,
+    },
   },
   gridContainer: {
     display: "grid",

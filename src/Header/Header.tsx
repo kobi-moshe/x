@@ -24,8 +24,8 @@ export const Header: React.FC = () => {
       <div onClick={navigateToHome} className={classes.image} />
       {token ? (
         <div className={classes.tokenButtonsWrapper}>
-          <Link to="/briefs" className={classes.link}>
-            <Typography>Briefs</Typography>
+          <Link to="/" className={classes.link}>
+            <Typography>Home</Typography>
           </Link>
           <Link to="/" onClick={handleLogout} className={classes.link}>
             <Typography>Logout</Typography>

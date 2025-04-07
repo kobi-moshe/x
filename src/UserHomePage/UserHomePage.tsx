@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import {
   AppBar,
   Toolbar,
@@ -15,33 +21,37 @@ import {
   //   Tooltip,
   CircularProgress,
   Dialog,
+  List,
+  ListItem,
+  Tooltip,
+  ListItemIcon,
+  ListItemText,
   Paper,
 } from "@mui/material";
 import {
   Close,
-  //   Inbox as InboxIcon,
-  //   Send as SendIcon,
-  //   Drafts as DraftsIcon,
-  //   Star as StarIcon,
-  //   Delete as DeleteIcon,
+  Inbox as InboxIcon,
+  Topic as TopicIcon,
   Search as SearchIcon,
-  //   Menu as MenuIcon,
+  Menu as MenuIcon,
+  ChevronLeft as ChevronLeftIcon,
   //   Refresh as RefreshIcon,
   //   MoreVert as MoreVertIcon,
 } from "@mui/icons-material";
 import api from "../api";
-import { Link } from "react-router-dom";
 import { darkTheme, useStyles } from "./styles";
 import { BriefData, briefsUrl, EmailData, UserMetadata } from "../common";
 import { BriefViewer } from "../BriefViewer";
 import { gmailEmailsUrl, userMetadataUrl } from "./utils";
+import { UserAvatar } from "../UserAvatar";
+import { CurrentTab } from "./types";
+import { BriefsBoard } from "../BriefsBoard";
 import { EmailViewer } from "../EmailViewer";
 import { EmailRow } from "../EmailRow";
-import { UserAvatar } from "../UserAvatar";
 
 export const UserHomePage: React.FC = () => {
   const classes = useStyles();
-  //   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
+  const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   //   const [selectedEmails, setSelectedEmails] = useState<Array<string>>([]);
   const [filteredEmails, setFilteredEmails] = useState<Array<EmailData>>([]);
   const [userMetadata, setUserMetadata] = useState<UserMetadata>();
@@ -49,14 +59,37 @@ export const UserHomePage: React.FC = () => {
   const [briefs, setBriefs] = useState<Array<BriefData>>([]);
   const [selectedBrief, setSelectedBrief] = useState<BriefData | null>();
   const [isPremiumUser, setIsPremiumUser] = useState(false);
+  const [currentTab, setCurrentTab] = useState<CurrentTab>("inbox");
   const [isLoading, setIsLoading] = useState(false);
 
   const emailsRef = useRef<Array<EmailData>>([]);
   const searchRef = useRef<HTMLInputElement>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  //   const isCheckboxAllSelected = selectedEmails.length === filteredEmails.length;
+  const onInboxClick = () => {
+    setCurrentTab("inbox");
+  };
+
+  const onBriefsClick = () => {
+    setCurrentTab("briefs");
+  };
+
   const briefsIds = briefs.map((brief) => brief.id);
+
+  const menuItems = [
+    {
+      key: "inbox",
+      text: "Inbox",
+      icon: <InboxIcon />,
+      callback: onInboxClick,
+    },
+    {
+      key: "briefs",
+      text: "Briefs",
+      icon: <TopicIcon />,
+      callback: onBriefsClick,
+    },
+  ];
 
   const fetchInitData = async () => {
     try {
@@ -81,26 +114,9 @@ export const UserHomePage: React.FC = () => {
     fetchInitData();
   }, []);
 
-  //   const toggleMenu = () => {
-  //     setIsMenuCollapsed(!isMenuCollapsed);
-  //   };
-
-  //   const handleCheckboxChange = (emailId: string) => {
-  //     setSelectedEmails((prev) =>
-  //       prev.includes(emailId)
-  //         ? prev.filter((id) => id !== emailId)
-  //         : [...prev, emailId]
-  //     );
-  //   };
-
-  //   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //     if (event.target.checked) {
-  //       const selected = filteredEmails.map((email) => email.id);
-  //       setSelectedEmails(selected);
-  //     } else {
-  //       setSelectedEmails([]);
-  //     }
-  //   };
+  const toggleMenu = () => {
+    setIsMenuCollapsed(!isMenuCollapsed);
+  };
 
   const onSearchChange = () => {
     if (debounceTimeout.current) {
@@ -116,28 +132,80 @@ export const UserHomePage: React.FC = () => {
       }, 300);
     }
   };
-  const onShowBriefClick = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    emailId: string
-  ) => {
-    e.stopPropagation();
-    const relevantBrief = briefs.find((brief) => brief.id === emailId);
-    if (relevantBrief) {
-      setSelectedBrief(relevantBrief);
-    }
-  };
+  const onShowBriefClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>, emailId: string) => {
+      e.stopPropagation();
+      const relevantBrief = briefs.find((brief) => brief.id === emailId);
+      if (relevantBrief) {
+        setSelectedBrief(relevantBrief);
+      }
+    },
+    [briefs]
+  );
 
   const onSelectedBriefClose = () => {
     setSelectedBrief(null);
   };
 
-  //   const menuItems = [
-  //     { text: "Inbox", icon: <InboxIcon /> },
-  //     { text: "Sent", icon: <SendIcon /> },
-  //     { text: "Drafts", icon: <DraftsIcon /> },
-  //     { text: "Starred", icon: <StarIcon /> },
-  //     { text: "Trash", icon: <DeleteIcon /> },
-  //   ];
+  const Content = useMemo(() => {
+    if (currentTab === "briefs") {
+      return (
+        <div className={classes.briefsWrapper}>
+          <Toolbar />
+          <BriefsBoard />
+        </div>
+      );
+    }
+    if (isLoading) {
+      return (
+        <div className={classes.loadingWrapper}>
+          <CircularProgress size={50} />
+        </div>
+      );
+    }
+    return (
+      <div className={classes.emailsContinerWrapper}>
+        <Toolbar />
+        <div className={classes.emailsWrapper}>
+          <Paper className={classes.emailsPaper}>
+            {filteredEmails.map((email) => (
+              <EmailRow
+                key={email.id}
+                {...email}
+                selectedEmail={selectedEmail}
+                setSelectedEmail={setSelectedEmail}
+                hasBrief={briefsIds.includes(email.id)}
+                onShowBriefClick={onShowBriefClick}
+              />
+            ))}
+          </Paper>
+          {selectedEmail && (
+            <EmailViewer
+              {...selectedEmail}
+              setSelectedEmail={setSelectedEmail}
+              hasBrief={briefsIds.includes(selectedEmail.id)}
+              onShowBriefClick={onShowBriefClick}
+              setBriefs={setBriefs}
+              isPremiumUser={isPremiumUser}
+            />
+          )}
+        </div>
+      </div>
+    );
+  }, [
+    briefsIds,
+    classes.briefsWrapper,
+    classes.emailsContinerWrapper,
+    classes.emailsPaper,
+    classes.emailsWrapper,
+    classes.loadingWrapper,
+    currentTab,
+    filteredEmails,
+    isLoading,
+    isPremiumUser,
+    onShowBriefClick,
+    selectedEmail,
+  ]);
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -145,10 +213,16 @@ export const UserHomePage: React.FC = () => {
       <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
         <AppBar position="fixed" style={{ backgroundImage: "none" }}>
           <Toolbar style={{ display: "flex", gap: 16, position: "relative" }}>
+            <IconButton
+              color="inherit"
+              aria-label="toggle menu"
+              onClick={toggleMenu}
+              edge="start"
+              style={{ marginRight: 20 }}
+            >
+              {isMenuCollapsed ? <MenuIcon /> : <ChevronLeftIcon />}
+            </IconButton>
             <UserAvatar {...userMetadata} />
-            <Link to="/briefs" className={classes.link}>
-              Briefs
-            </Link>
             <TextField
               inputRef={searchRef}
               variant="outlined"
@@ -166,9 +240,9 @@ export const UserHomePage: React.FC = () => {
             />
           </Toolbar>
         </AppBar>
-        {/* <div
+        <div
           style={{
-            width: isMenuCollapsed ? 60 : 200,
+            width: isMenuCollapsed ? 65 : 200,
             display: "flex",
             flexDirection: "column",
             flexShrink: 0,
@@ -181,89 +255,32 @@ export const UserHomePage: React.FC = () => {
             {menuItems.map((item) => (
               <ListItem
                 key={item.text}
-                style={{
-                  justifyContent: "center",
-                }}
+                onClick={item.callback}
+                className={
+                  item.key === currentTab
+                    ? classes.navLinkWrapperSelected
+                    : classes.navLinkWrapper
+                }
               >
                 <Tooltip
                   title={isMenuCollapsed ? item.text : ""}
                   placement="right"
                 >
-                  <ListItemIcon style={{ minWidth: isMenuCollapsed ? 0 : 50 }}>
+                  <ListItemIcon style={{ minWidth: isMenuCollapsed ? 0 : 45 }}>
                     {item.icon}
                   </ListItemIcon>
                 </Tooltip>
-                {!isMenuCollapsed && <ListItemText primary={item.text} />}
+                {!isMenuCollapsed && (
+                  <ListItemText
+                    primary={item.text}
+                    className={classes.navLinkLabel}
+                  />
+                )}
               </ListItem>
             ))}
           </List>
-        </div> */}
-        {isLoading ? (
-          <div className={classes.loadingWrapper}>
-            <CircularProgress size={50} />
-          </div>
-        ) : (
-          <div
-            style={{
-              flexGrow: 1,
-              flexShrink: 1,
-              minWidth: 0,
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <Toolbar />
-            {/* <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                p: 1,
-                borderBottom: "1px solid rgba(255, 255, 255, 0.12)",
-              }}
-            >
-              <Checkbox
-                size="small"
-                checked={isCheckboxAllSelected}
-                onChange={handleSelectAll}
-                indeterminate={
-                  selectedEmails.length > 0 &&
-                  selectedEmails.length < filteredEmails.length
-                }
-              />
-              <IconButton>
-                <RefreshIcon />
-              </IconButton>
-              <IconButton>
-                <MoreVertIcon />
-              </IconButton>
-            </Box> */}
-            <div className={classes.emailsWrapper}>
-              <Paper className={classes.emailsPaper}>
-                {filteredEmails.map((email) => (
-                  <EmailRow
-                    key={email.id}
-                    {...email}
-                    selectedEmail={selectedEmail}
-                    setSelectedEmail={setSelectedEmail}
-                    hasBrief={briefsIds.includes(email.id)}
-                    onShowBriefClick={onShowBriefClick}
-                  />
-                ))}
-              </Paper>
-              {selectedEmail && (
-                <EmailViewer
-                  {...selectedEmail}
-                  setSelectedEmail={setSelectedEmail}
-                  hasBrief={briefsIds.includes(selectedEmail.id)}
-                  onShowBriefClick={onShowBriefClick}
-                  setBriefs={setBriefs}
-                  isPremiumUser={isPremiumUser}
-                />
-              )}
-            </div>
-          </div>
-        )}
+        </div>
+        {Content}
       </Box>
       {selectedBrief && (
         <Dialog

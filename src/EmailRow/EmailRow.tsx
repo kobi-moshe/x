@@ -1,10 +1,11 @@
 import { useRef } from "react";
-import { Button, Typography } from "@mui/material";
+import { IconButton, Tooltip, Typography } from "@mui/material";
 import { useStyles } from "./styles";
 import { EmailRowProps } from "./types";
 import { EmailAvatar, EmailData } from "../common";
 import DOMPurify from "dompurify";
 import moment from "moment";
+import { Visibility as VisibilityIcon } from "@mui/icons-material";
 
 export const EmailRow: React.FC<EmailRowProps> = (props) => {
   const {
@@ -72,20 +73,18 @@ export const EmailRow: React.FC<EmailRowProps> = (props) => {
           {snippet}
         </Typography>
       </div>
-      <Typography variant="caption" className={classes.date}>
-        {date}
-      </Typography>
-      {hasBrief && (
-        <div className={classes.emailActions}>
-          <Button
-            variant="contained"
-            onClick={(e) => onShowBriefClick(e, id)}
-            className={classes.showBriefButton}
-          >
-            Show brief
-          </Button>
-        </div>
-      )}
+      <div className={classes.rightSideWrapper}>
+        {hasBrief && (
+          <IconButton onClick={(e) => onShowBriefClick(e, id)}>
+            <Tooltip title="Show brief" placement="left">
+              <VisibilityIcon style={{ color: "#52BD95" }} />
+            </Tooltip>
+          </IconButton>
+        )}
+        <Typography variant="caption" className={classes.date}>
+          {date}
+        </Typography>
+      </div>
     </div>
   );
 };

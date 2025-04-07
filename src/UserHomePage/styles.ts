@@ -66,6 +66,40 @@ export const useStyles = makeStyles((theme: Theme) => ({
     flexGrow: 1,
     borderRight: `1px solid ${theme.palette.grey[800]}`,
   },
+  navLinkWrapper: {
+    "&.MuiListItem-root": {
+      "&:hover": {
+        backgroundColor: theme.palette.grey[800],
+      },
+      padding: theme.spacing(1.5, 2.5),
+      cursor: "pointer",
+    },
+  },
+  navLinkWrapperSelected: {
+    "&.MuiListItem-root": {
+      padding: theme.spacing(1.5, 2.5),
+      cursor: "pointer",
+      backgroundColor: theme.palette.grey[800],
+    },
+  },
+  navLinkLabel: {
+    "&.MuiListItemText-root": {
+      margin: 0,
+    },
+  },
+  briefsWrapper: {
+    display: "flex",
+    flexDirection: "column",
+    flexGrow: 1,
+  },
+  emailsContinerWrapper: {
+    flexGrow: 1,
+    flexShrink: 1,
+    minWidth: 0,
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+  },
   emailsWrapper: {
     flexGrow: 1,
     display: "flex",

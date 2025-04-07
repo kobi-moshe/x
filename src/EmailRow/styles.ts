@@ -13,9 +13,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
     borderBottom: "1px solid rgba(255, 255, 255, 0.12)",
     cursor: "pointer",
     backgroundColor: "inherit",
-    "&:hover $emailActions": {
-      opacity: 1,
-    },
   },
   emailWrapperSelected: {
     display: "flex",
@@ -25,24 +22,16 @@ export const useStyles = makeStyles((theme: Theme) => ({
     borderBottom: theme.palette.grey[800],
     cursor: "pointer",
     backgroundColor: "rgba(82, 189, 149, 0.2)",
-    "&:hover $emailActions": {
-      opacity: 1,
-    },
+  },
+  rightSideWrapper: {
+    display: "flex",
+    alignItems: "center",
+    flexShrink: 0,
   },
   date: {
-    width: 100,
-    fontWeight: "bold",
-    textAlign: "right",
-  },
-  emailActions: {
-    position: "absolute",
-    right: theme.spacing(2),
-    opacity: 0,
-    transition: "opacity 0.3s ease",
-  },
-  showBriefButton: {
-    "&.MuiButton-root": {
-      textTransform: "capitalize",
+    "&.MuiTypography-root": {
+      flexShrink: 0,
+      fontWeight: "bold",
     },
   },
 }));

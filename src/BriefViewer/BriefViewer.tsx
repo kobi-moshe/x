@@ -23,18 +23,18 @@ export const BriefViewer: React.FC<BriefData> = (props) => {
   return (
     <Card className={classes.card}>
       <CardContent className={classes.briefCardContent}>
-        <Typography variant="h6" style={{ color: "#52BD95" }}>
+        <Typography variant="h6" fontWeight="bold">
           {subject}
         </Typography>
         <div>
-          <Typography variant="h6" fontWeight="bold">
+          <Typography variant="h6" style={{ color: "#52BD95" }}>
             Summary
           </Typography>
           <Typography>{summary}</Typography>
         </div>
         {responses && (
           <div>
-            <Typography variant="h6" fontWeight="bold">
+            <Typography variant="h6" style={{ color: "#52BD95" }}>
               Possible Responses
             </Typography>
             <Typography>Positive:</Typography>
@@ -48,7 +48,7 @@ export const BriefViewer: React.FC<BriefData> = (props) => {
         {actions.length > 0 && (
           <div>
             <div className={classes.actionItemsWrapper}>
-              <Typography variant="h6" fontWeight="bold">
+              <Typography variant="h6" style={{ color: "#52BD95" }}>
                 Action Items
               </Typography>
               <Tooltip title="Add tasks">
