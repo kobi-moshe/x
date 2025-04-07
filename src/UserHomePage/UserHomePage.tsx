@@ -92,20 +92,17 @@ export const UserHomePage: React.FC = () => {
   ];
 
   const fetchInitData = async () => {
-    try {
-      setIsLoading(true);
-      const userMetadataResponse = await api.get(userMetadataUrl);
-      setUserMetadata(userMetadataResponse.data);
-      api.get(gmailEmailsUrl).then((response) => {
-        emailsRef.current = response.data;
-        setFilteredEmails(response.data);
-      });
-      api.get(briefsUrl).then((response) => {
-        setBriefs(response.data);
-      });
-    } finally {
+    setIsLoading(true);
+    const userMetadataResponse = await api.get(userMetadataUrl);
+    setUserMetadata(userMetadataResponse.data);
+    api.get(gmailEmailsUrl).then((response) => {
+      emailsRef.current = response.data;
+      setFilteredEmails(response.data);
       setIsLoading(false);
-    }
+    });
+    api.get(briefsUrl).then((response) => {
+      setBriefs(response.data);
+    });
   };
 
   useEffect(() => {
