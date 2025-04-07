@@ -165,9 +165,8 @@ export const PrivacyPolicy: React.FC = () => {
         We do <strong>not</strong> retain or use any user data obtained through
         Workspace APIs for the purpose of developing, improving, or training
         generalized AI or machine learning models. Any data collected through
-        the application is solely for the purpose of providing the service and
-        ensuring user functionality, such as storing summaries, action items, or
-        responses for user access. We do not use this data for AI model training
+        the application is solely for the purpose of providing the service (viewing Gmail emails) and
+        ensuring user functionality. We do not use this data for AI model training
         or generalization.
       </p>
       <p>
