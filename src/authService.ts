@@ -48,8 +48,15 @@ export const signInWithGoogle = async (): Promise<void> => {
     const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=908421014283-07c2rqi65hmg22s6vmss7tvc82q0bsl1.apps.googleusercontent.com&redirect_uri=${encodeURIComponent(
       `${apiBaseUrl}/auth/google/callback`
     )}&response_type=code&scope=openid email profile https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/tasks&access_type=offline&prompt=consent`;
-
-    window.open(oauthUrl, "_blank", "width=500,height=600");
+    const width = 500;
+    const height = 600;
+    const left = window.innerWidth / 2 - width / 2 + window.screenX;
+    const top = window.innerHeight / 2 - height / 2 + window.screenY;
+    window.open(
+      oauthUrl,
+      "_blank",
+      `width=${width},height=${height},top=${top},left=${left}`
+    );
     window.addEventListener("message", async (event) => {
       if (event.origin !== apiBaseUrl) return;
       const { firebaseToken } = event.data;

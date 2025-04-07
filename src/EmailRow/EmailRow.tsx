@@ -54,17 +54,7 @@ export const EmailRow: React.FC<EmailRowProps> = (props) => {
             onChange={() => handleCheckboxChange(id)}
             onClick={(e) => e.stopPropagation()}
           /> */}
-      <Typography
-        variant="body2"
-        style={{
-          width: 200,
-          flexShrink: 0,
-          fontWeight: "bold",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-        }}
-      >
+      <Typography variant="body2" className={classes.subjectWrapper}>
         {senderName}
       </Typography>
       <div style={{ flexGrow: 1, minWidth: 0 }}>

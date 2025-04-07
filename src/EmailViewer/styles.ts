@@ -12,6 +12,9 @@ export const useStyles = makeStyles((theme: Theme) => ({
       padding: theme.spacing(4),
       backgroundImage: "none",
       borderLeft: `1px solid ${theme.palette.text.secondary}`,
+      [theme.breakpoints.down("sm")]: {
+        width: "100%",
+      },
     },
   },
   headerWrapper: {

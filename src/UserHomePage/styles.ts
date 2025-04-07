@@ -20,6 +20,19 @@ export const darkTheme = createTheme({
 });
 
 export const useStyles = makeStyles((theme: Theme) => ({
+  collapseMenuIcon: {
+    "&.MuiIconButton-root": {
+      marginRight: theme.spacing(2.5),
+      [theme.breakpoints.down("sm")]: {
+        display: "none",
+      },
+    },
+  },
+  userAvatar: {
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+  },
   link: {
     textDecoration: "none",
     color: "#52BD95",
@@ -60,6 +73,28 @@ export const useStyles = makeStyles((theme: Theme) => ({
     },
     "& .MuiInputBase-root": {
       borderRadius: 50,
+    },
+  },
+  navLinksContainerWrapper: {
+    width: 200,
+    display: "flex",
+    flexDirection: "column",
+    flexShrink: 0,
+    transition: "width 0.5s",
+    overflowX: "hidden",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+  },
+  navLinksContainerWrapperCollapsed: {
+    width: 65,
+    display: "flex",
+    flexDirection: "column",
+    flexShrink: 0,
+    transition: "width 0.5s",
+    overflowX: "hidden",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
     },
   },
   navLinksWrapper: {
@@ -113,6 +148,17 @@ export const useStyles = makeStyles((theme: Theme) => ({
     "-ms-overflow-style": "none",
     "&::-webkit-scrollbar": {
       display: "none",
+    },
+  },
+  bottomAppBar: {
+    "&.MuiAppBar-root": {
+      top: "auto",
+      bottom: 0,
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+      [theme.breakpoints.up("sm")]: {
+        display: "none",
+      },
     },
   },
   briefDialog: {

@@ -13,8 +13,10 @@ import { UserMetadata } from "../common";
 import clsx from "clsx";
 import { logout } from "../authService";
 
-export const UserAvatar: React.FC<Partial<UserMetadata>> = (props) => {
-  const { email, name, isPremium } = props;
+export const UserAvatar: React.FC<
+  Partial<UserMetadata> & { className?: string }
+> = (props) => {
+  const { email, name, isPremium, className } = props;
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -34,7 +36,7 @@ export const UserAvatar: React.FC<Partial<UserMetadata>> = (props) => {
   };
 
   return (
-    <div className={clsx(!firstLetter && classes.wrapperHidden)}>
+    <div className={clsx(!firstLetter ? classes.wrapperLoading : className)}>
       <IconButton onClick={handleClick} size="small">
         <Avatar className={classes.avatar}>{firstLetter}</Avatar>
       </IconButton>

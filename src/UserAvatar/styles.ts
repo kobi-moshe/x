@@ -2,8 +2,8 @@ import { Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) => ({
-  wrapperHidden: {
-    pointerEvents: "none",
+  wrapperLoading: {
+    display: "none",
   },
   avatar: {
     "&.MuiAvatar-root": {
@@ -13,6 +13,9 @@ export const useStyles = makeStyles((theme: Theme) => ({
       backgroundColor: "#52BD95",
       cursor: "pointer",
       transition: "transform 0.3s ease-in-out",
+      // [theme.breakpoints.down("sm")]: {
+      //   display: "none",
+      // },
       "&:hover": {
         transform: "scale(1.05)",
       },

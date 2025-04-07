@@ -218,11 +218,11 @@ export const UserHomePage: React.FC = () => {
               aria-label="toggle menu"
               onClick={toggleMenu}
               edge="start"
-              style={{ marginRight: 20 }}
+              className={classes.collapseMenuIcon}
             >
               {isMenuCollapsed ? <MenuIcon /> : <ChevronLeftIcon />}
             </IconButton>
-            <UserAvatar {...userMetadata} />
+            <UserAvatar {...userMetadata} className={classes.userAvatar} />
             <TextField
               inputRef={searchRef}
               variant="outlined"
@@ -241,14 +241,11 @@ export const UserHomePage: React.FC = () => {
           </Toolbar>
         </AppBar>
         <div
-          style={{
-            width: isMenuCollapsed ? 65 : 200,
-            display: "flex",
-            flexDirection: "column",
-            flexShrink: 0,
-            transition: "width 0.5s",
-            overflowX: "hidden",
-          }}
+          className={
+            isMenuCollapsed
+              ? classes.navLinksContainerWrapperCollapsed
+              : classes.navLinksContainerWrapper
+          }
         >
           <Toolbar />
           <List className={classes.navLinksWrapper}>
@@ -281,6 +278,20 @@ export const UserHomePage: React.FC = () => {
           </List>
         </div>
         {Content}
+        <AppBar className={classes.bottomAppBar}>
+          <UserAvatar {...userMetadata} />
+          {menuItems.map((item) => (
+            <IconButton
+              key={item.key}
+              onClick={item.callback}
+              style={{ color: currentTab === item.key ? "#52BD95" : "white" }}
+            >
+              {React.cloneElement(item.icon, {
+                fontSize: "large",
+              })}
+            </IconButton>
+          ))}
+        </AppBar>
       </Box>
       {selectedBrief && (
         <Dialog
