@@ -2,33 +2,33 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   AppBar,
   Toolbar,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
+  //   List,
+  //   ListItem,
+  //   ListItemIcon,
+  //   ListItemText,
   Typography,
   TextField,
   IconButton,
   Box,
   Paper,
-  Checkbox,
+  //   Checkbox,
   ThemeProvider,
   CssBaseline,
-  Tooltip,
+  //   Tooltip,
   CircularProgress,
   Button,
   Dialog,
 } from "@mui/material";
 import {
-  Inbox as InboxIcon,
-  Send as SendIcon,
-  Drafts as DraftsIcon,
-  Star as StarIcon,
-  Delete as DeleteIcon,
+  //   Inbox as InboxIcon,
+  //   Send as SendIcon,
+  //   Drafts as DraftsIcon,
+  //   Star as StarIcon,
+  //   Delete as DeleteIcon,
   Search as SearchIcon,
-  Menu as MenuIcon,
-  Refresh as RefreshIcon,
-  MoreVert as MoreVertIcon,
+  //   Menu as MenuIcon,
+  //   Refresh as RefreshIcon,
+  //   MoreVert as MoreVertIcon,
 } from "@mui/icons-material";
 import api from "../api";
 import DOMPurify from "dompurify";
@@ -45,8 +45,8 @@ import { gmailEmailsUrl } from "./utils";
 export const UserHomePage: React.FC = () => {
   const classes = useStyles();
   const [selectedEmail, setSelectedEmail] = useState<EmailType | null>();
-  const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
-  const [selectedEmails, setSelectedEmails] = useState<Array<string>>([]);
+  //   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
+  //   const [selectedEmails, setSelectedEmails] = useState<Array<string>>([]);
   const [filteredEmails, setFilteredEmails] = useState<Array<EmailType>>([]);
   const [briefs, setBriefs] = useState<Array<BriefData>>([]);
   const [selectedBrief, setSelectedBrief] = useState<BriefData | null>();
@@ -59,7 +59,7 @@ export const UserHomePage: React.FC = () => {
   const searchRef = useRef<HTMLInputElement>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  const isCheckboxAllSelected = selectedEmails.length === filteredEmails.length;
+  //   const isCheckboxAllSelected = selectedEmails.length === filteredEmails.length;
   const briefsIds = briefs.map((brief) => brief.id);
 
   const fetchInitData = async () => {
@@ -95,26 +95,26 @@ export const UserHomePage: React.FC = () => {
     setSelectedEmail(null);
   };
 
-  const toggleMenu = () => {
-    setIsMenuCollapsed(!isMenuCollapsed);
-  };
+  //   const toggleMenu = () => {
+  //     setIsMenuCollapsed(!isMenuCollapsed);
+  //   };
 
-  const handleCheckboxChange = (emailId: string) => {
-    setSelectedEmails((prev) =>
-      prev.includes(emailId)
-        ? prev.filter((id) => id !== emailId)
-        : [...prev, emailId]
-    );
-  };
+  //   const handleCheckboxChange = (emailId: string) => {
+  //     setSelectedEmails((prev) =>
+  //       prev.includes(emailId)
+  //         ? prev.filter((id) => id !== emailId)
+  //         : [...prev, emailId]
+  //     );
+  //   };
 
-  const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const selected = filteredEmails.map((email) => email.id);
-      setSelectedEmails(selected);
-    } else {
-      setSelectedEmails([]);
-    }
-  };
+  //   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //     if (event.target.checked) {
+  //       const selected = filteredEmails.map((email) => email.id);
+  //       setSelectedEmails(selected);
+  //     } else {
+  //       setSelectedEmails([]);
+  //     }
+  //   };
 
   const onSearchChange = () => {
     if (debounceTimeout.current) {
@@ -154,13 +154,13 @@ export const UserHomePage: React.FC = () => {
     navigate("/");
   };
 
-  const menuItems = [
-    { text: "Inbox", icon: <InboxIcon /> },
-    { text: "Sent", icon: <SendIcon /> },
-    { text: "Drafts", icon: <DraftsIcon /> },
-    { text: "Starred", icon: <StarIcon /> },
-    { text: "Trash", icon: <DeleteIcon /> },
-  ];
+  //   const menuItems = [
+  //     { text: "Inbox", icon: <InboxIcon /> },
+  //     { text: "Sent", icon: <SendIcon /> },
+  //     { text: "Drafts", icon: <DraftsIcon /> },
+  //     { text: "Starred", icon: <StarIcon /> },
+  //     { text: "Trash", icon: <DeleteIcon /> },
+  //   ];
 
   return (
     <ThemeProvider theme={darkTheme}>
