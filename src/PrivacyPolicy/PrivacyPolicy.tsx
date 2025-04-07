@@ -6,7 +6,7 @@ export const PrivacyPolicy: React.FC = () => {
   return (
     <div className={classes.wrapper}>
       <h1>Privacy Policy</h1>
-      <p>Last updated: November 03, 2024</p>
+      <p>Last updated: November 24, 2024</p>
       <p>
         This Privacy Policy describes Our policies and procedures on the
         collection, use and disclosure of Your information when You use the
@@ -160,6 +160,59 @@ export const PrivacyPolicy: React.FC = () => {
         visit our Service or when You access the Service by or through a mobile
         device.
       </p>
+      <h2>Data Usage and Retention</h2>
+      <p>
+        We do <strong>not</strong> retain or use any user data obtained through
+        Workspace APIs for the purpose of developing, improving, or training
+        generalized AI or machine learning models. Any data collected through
+        the application is solely for the purpose of providing the service and
+        ensuring user functionality, such as storing summaries, action items, or
+        responses for user access. We do not use this data for AI model training
+        or generalization.
+      </p>
+      <p>
+        We are committed to protecting your privacy and being transparent about
+        how your data is handled. Below is detailed information about the data
+        collected, processed, and stored by our application:
+      </p>
+      <ol>
+        <li>
+          <strong>Data Collection and Storage:</strong> When you use our
+          application, we collect and store the following data:
+          <ul>
+            <li>
+              Summaries, Action Items, and Possible Responses: These are
+              securely stored to allow you to access, view, and manage your
+              previously created information.
+            </li>
+          </ul>
+        </li>
+        <li>
+          <strong>Encryption and Security:</strong> All stored data is encrypted
+          both in transit and at rest, ensuring that it remains secure and
+          cannot be accessed without proper authorization. We implement
+          industry-standard encryption protocols to protect your data from
+          unauthorized access, loss, or misuse.
+        </li>
+        <li>
+          <strong>Purpose of Data Storage:</strong> The data is stored solely
+          for your convenience, allowing you to review and manage your
+          previously created content at any time. We do not use this data for
+          any other purposes, including advertising, analytics, or training
+          AI/ML models.
+        </li>
+        <li>
+          <strong>User Control and Deletion:</strong> You retain full control
+          over your data. You can request the deletion of any or all stored data
+          by contacting us through the contact information provided below. Upon
+          your request, we will permanently delete the data from our database,
+          including encrypted backups.
+        </li>
+        <li>
+          <strong>Data Sharing:</strong> We do not share, sell, or transfer any
+          stored data to third parties under any circumstances.
+        </li>
+      </ol>
       <h4>Tracking Technologies and Cookies</h4>
       <p>
         We use Cookies and similar tracking technologies to track the activity
