@@ -6,6 +6,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(2),
+    background: "linear-gradient(to right, #28282B,#060C0C)",
     [theme.breakpoints.up("md")]: {
       gap: theme.spacing(6),
     },
@@ -71,11 +72,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
   secondSection: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    gap: theme.spacing(2),
-    padding: theme.spacing(2),
-    [theme.breakpoints.up("md")]: {
-      padding: theme.spacing(0, 30),
+    gap: theme.spacing(20),
+    padding: theme.spacing(0, 30),
+    [theme.breakpoints.down("sm")]: {
+      gap: theme.spacing(7),
+      padding: theme.spacing(2),
     },
   },
   exampleImage: {
@@ -162,5 +163,68 @@ export const useStyles = makeStyles((theme: Theme) => ({
   valueIcon: {
     width: 50,
     height: 50,
+  },
+  featureWrapperLeft: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 100,
+    position: "relative",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      gap: theme.spacing(3),
+    },
+  },
+  featureWrapperRight: {
+    display: "flex",
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 100,
+    position: "relative",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      gap: theme.spacing(3),
+    },
+  },
+  featureLeftText: {
+    "&.MuiTypography-root": {
+      marginBottom: "10%",
+      [theme.breakpoints.down("sm")]: {
+        fontSize: theme.typography.h6.fontSize,
+        marginBottom: "0%",
+      },
+    },
+  },
+  featureRightText: {
+    "&.MuiTypography-root": {
+      marginTop: "10%",
+      [theme.breakpoints.down("sm")]: {
+        fontSize: theme.typography.h6.fontSize,
+        marginTop: "0%",
+      },
+    },
+  },
+  rightArrow: {
+    position: "absolute",
+    left: "calc(50% - 300px)",
+    bottom: 0,
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+  },
+  leftArrow: {
+    position: "absolute",
+    right: "calc(50% - 300px)",
+    top: 0,
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+  },
+  video: {
+    width: "50%",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+    },
   },
 }));

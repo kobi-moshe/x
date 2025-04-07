@@ -24,7 +24,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     backgroundImage: `url(${logo})`,
     cursor: "pointer",
     [theme.breakpoints.down("sm")]: {
-      width: 100,
+      width: 120,
     },
   },
   link: {
