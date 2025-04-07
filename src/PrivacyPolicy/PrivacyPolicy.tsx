@@ -102,11 +102,11 @@ export const PrivacyPolicy: React.FC = () => {
           <p>
             <strong>Website</strong> refers to MailBrief, accessible from{" "}
             <a
-              href="https://mailbrief.co"
+              href="https://mailbrief.app"
               rel="external nofollow noopener"
               target="_blank"
             >
-              https://mailbrief.co
+              https://mailbrief.app
             </a>
           </p>
         </li>
@@ -492,7 +492,7 @@ export const PrivacyPolicy: React.FC = () => {
         If you have any questions about this Privacy Policy, You can contact us:
       </p>
       <ul>
-        <li>By email: mailbriefsup@gmail.com</li>
+        <li>By email: support@mailbrief.app</li>
       </ul>
     </div>
   );

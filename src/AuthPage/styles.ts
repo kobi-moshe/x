@@ -20,7 +20,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
   loginButton: {
     "&.MuiButton-root": {
       position: "relative",
-      overflow: "hidden",
       color: "#fff",
       background: "transparent",
       border: "none",
